@@ -1,9 +1,13 @@
 import React from "react";
+import Feed from "../Feed";
 
 const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="grid-1-3">
+      <div>
+        <h2>Sidebar</h2>
+      </div>
+      <Feed />
     </div>
   );
 };

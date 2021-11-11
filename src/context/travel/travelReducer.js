@@ -1,7 +1,13 @@
-import {
-  TRAVEL_TYPE,
-  TRAVEL_USED_ORIGIN,
-  TRAVEL_USED_DESTINATION,
-} from "../types";
+import { ADD_TRAVEL } from "../types";
 
-export default (state, action) => {};
+export default (state, action) => {
+  switch (action.type) {
+    case ADD_TRAVEL:
+      return {
+        ...state,
+        travelActions: [...state.travelActions, action.payload],
+      };
+    default:
+      return state;
+  }
+};
