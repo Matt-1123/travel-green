@@ -22,6 +22,12 @@ const TravelState = (props) => {
           "Nice day. Decided to walk instead of taking the car to work.",
         date: Date.now(),
       },
+      {
+        id: 3,
+        title: "Test Post",
+        description: "Lorem ipsum dolor sit.",
+        date: Date.now(),
+      },
     ],
   };
 
