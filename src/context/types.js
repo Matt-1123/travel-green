@@ -1,1 +1,9 @@
 export const ADD_TRAVEL = "ADD_TRAVEL";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const USER_LOADED = "REMOVE_ALERT";
+export const AUTH_ERROR = "REMOVE_ALERT";
+export const LOGIN_SUCCESS = "REMOVE_ALERT";
+export const LOGIN_FAIL = "REMOVE_ALERT";
+export const LOGOUT = "REMOVE_ALERT";
+export const CLEAR_ERRORS = "REMOVE_ALERT";
