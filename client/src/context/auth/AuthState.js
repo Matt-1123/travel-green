@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import axios from "axios";
 import AuthContext from "./authContext";
 import authReducer from "./authReducer";
-import setAuthToken from "../../utils/setAuthToken";
+// import setAuthToken from "../../utils/setAuthToken";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -35,7 +35,7 @@ const AuthState = (props) => {
 
     if (localStorage.token) {
       console.log("there is a token in local storage");
-      setAuthToken(localStorage.token);
+      // setAuthToken(localStorage.token);
     }
 
     try {

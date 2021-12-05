@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import axios from "axios";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import TravelContext from "./travelContext";
 import TravelReducer from "./travelReducer";
 import { ADD_TRAVEL } from "../types";
