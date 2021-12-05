@@ -336,8 +336,12 @@ button {
   margin: 0.2rem 0;
 }
 
+.form-group label {
+  font-weight: bold;
+}
+
 .form-container {
-  max-width: 500px;
+  max-width: 725px;
   margin: 2rem auto;
   overflow: hidden;
   padding: 0 2rem;
