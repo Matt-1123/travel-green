@@ -1,31 +1,57 @@
-import React, { useContext } from "react";
-import PropTypes from "prop-types";
-import TravelContext from "../../context/travel/travelContext";
+import React, { useState } from "react";
+import TravelForm from "./TravelForm";
+import TravelSummary from "./TravelSummary";
 
-const TravelAction = ({ action }) => {
-  const travelContext = useContext(TravelContext);
+const TravelAction = () => {
+  const [travel, setTravel] = useState({
+    step: 1,
+    title: "",
+    description: "",
+    date: null,
+    usedOrigin: "",
+    usedDestination: "",
+    avoidedOrigin: "",
+    avoidedDestination: "",
+    impact: null,
+  });
 
-  const { title, description, date } = action;
+  const {
+    step,
+    title,
+    description,
+    date,
+    usedOrigin,
+    usedDestination,
+    avoidedOrigin,
+    avoidedDestination,
+    impact,
+  } = travel;
 
-  return (
-    <div className="card bg-light">
-      <h3 className="text-primary text-left">{title}</h3>
-      <ul className="list">
-        {description && (
-          <li>
-            <p>{description}</p>
-          </li>
-        )}
-        <li>
-          <p>{date}</p>
-        </li>
-      </ul>
-    </div>
-  );
-};
+  // Proceed to the Next Step
+  const nextStep = () =>
+    this.setState({
+      ...travel,
+      step: step + 1,
+    });
 
-TravelAction.propTypes = {
-  action: PropTypes.object.isRequired,
+  const onChange = (e) =>
+    setTravel({ ...travel, [e.target.name]: e.target.value });
+
+  switch (step) {
+    case 1:
+      return (
+        <TravelForm
+          travel={travel}
+          setTravel={setTravel}
+          onChange={onChange}
+          nextStep={nextStep}
+        />
+      );
+    case 2:
+      return <TravelSummary />;
+    default:
+      console.log("Error - no condition for this step number");
+  }
 };
 
 export default TravelAction;

@@ -5,45 +5,16 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import GoogleMapReact from "google-map-react";
 
-const TravelForm = () => {
-  const [travel, setTravel] = useState({
-    title: "",
-    description: "",
-    date: null,
-    usedTravelType: null,
-    usedOrigin: "",
-    usedDestination: "",
-    avoidedTravelType: null,
-    avoidedOrigin: "",
-    avoidedDestination: "",
-  });
+const TravelForm = ({ travel, setTravel, onChange, nextStep }) => {
+  // const handlePlacesChange = ({travel.usedOrigin}) =>
+  //   setTravel({ ...travel, travel.usedOrigin });
 
-  const {
-    title,
-    description,
-    date,
-    usedTravelType,
-    usedOrigin,
-    usedDestination,
-    avoidedTravelType,
-    avoidedOrigin,
-    avoidedDestination,
-  } = travel;
-
-  console.log(process.env);
-
-  const onChange = (e) =>
-    setTravel({ ...travel, [e.target.name]: e.target.value });
-
-  const handlePlacesChange = (usedOrigin) =>
-    setTravel({ ...travel, usedOrigin });
-
-  const handleSelect = (usedOrigin) => {
-    geocodeByAddress(usedOrigin)
-      .then((results) => getLatLng(results[0]))
-      .then((latLng) => console.log("Success", latLng))
-      .catch((error) => console.error("Error", error));
-  };
+  // const handleSelect = ({travel.usedOrigin}) => {
+  //   geocodeByAddress(travel.usedOrigin)
+  //     .then((results) => getLatLng(results[0]))
+  //     .then((latLng) => console.log("Success", latLng))
+  //     .catch((error) => console.error("Error", error));
+  // };
 
   return (
     <form className="form-container">
@@ -55,7 +26,7 @@ const TravelForm = () => {
           type="text"
           name="title"
           placeholder="Title"
-          value={title}
+          value={travel.title}
           onChange={onChange}
         />
       </div>
@@ -66,7 +37,7 @@ const TravelForm = () => {
           type="text"
           name="description"
           placeholder="(Optional) Describe your green travel"
-          value={description}
+          value={travel.description}
           onChange={onChange}
         />
       </div>
@@ -76,7 +47,7 @@ const TravelForm = () => {
           id="date"
           type="date"
           name="date"
-          value={date}
+          value={travel.date}
           onChange={onChange}
         />
       </div>
@@ -86,8 +57,8 @@ const TravelForm = () => {
         <div className="form-group">
           <label>Travel type</label>
           <select name="usedTravelType" onChange={onChange}>
-            <option value="bicycling">Bicycling</option>
             <option value="walking">Walking</option>
+            <option value="bicycling">Bicycling</option>
             <option value="transit" disabled>
               Transit (coming soon)
             </option>
@@ -95,17 +66,17 @@ const TravelForm = () => {
         </div>
         <div className="form-group">
           <label htmlFor="usedOrigin">Origin</label>
-          <input
+          {/* <input
             type="text"
             id="usedOrigin"
             placeholder="Enter a location"
             onChange={onChange}
-          />
+          /> */}
           <PlacesAutocomplete
             name="usedOrigin"
-            value={usedOrigin}
-            onChange={handlePlacesChange}
-            onSelect={handleSelect}
+            value={travel.usedOrigin}
+            onChange={onChange}
+            // onSelect={handleSelect}
           >
             {({
               getInputProps,
@@ -163,8 +134,12 @@ const TravelForm = () => {
       <div>
         <input
           type="submit"
-          value="Submit"
+          value="Calculate Impact"
           className="btn btn-primary btn-block"
+          // onClick={(e) => {
+          //   e.preventDefault();
+          //   setStep({ step: step + 1 })
+          // }}
         />
       </div>
     </form>

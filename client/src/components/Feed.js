@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from "react";
 import TravelContext from "../context/travel/travelContext";
-import TravelAction from "./travel/TravelAction";
+import TravelFeedItem from "./travel/TravelFeedItem";
 
 const Feed = () => {
   const travelContext = useContext(TravelContext);
@@ -14,7 +14,7 @@ const Feed = () => {
   return (
     <Fragment>
       {travelActions.map((action) => (
-        <TravelAction key={action.id} action={action} />
+        <TravelFeedItem key={action.id} action={action} />
       ))}
     </Fragment>
   );
