@@ -5,7 +5,8 @@ import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import AuthState from "./context/auth/AuthState";
 import TravelState from "./context/travel/TravelState";
-import TravelAction from "./components/travel/TravelAction";
+import TravelForm from "./components/travel/TravelForm";
+import TravelSummary from "./components/travel/TravelSummary";
 import "./App.css";
 
 const App = () => {
@@ -19,7 +20,12 @@ const App = () => {
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/about" element={<About />} />
-                <Route exact path="/add-travel" element={<TravelAction />} />
+                <Route exact path="/add-travel" element={<TravelForm />} />
+                <Route
+                  exact
+                  path="/add-travel/summary"
+                  element={<TravelSummary />}
+                />
               </Routes>
             </div>
           </Fragment>

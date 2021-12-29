@@ -3,18 +3,67 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import GoogleMapReact from "google-map-react";
 
-const TravelForm = ({ travel, setTravel, onChange, nextStep }) => {
-  // const handlePlacesChange = ({travel.usedOrigin}) =>
-  //   setTravel({ ...travel, travel.usedOrigin });
+const TravelForm = () => {
+  const [travel, setTravel] = useState({
+    title: "",
+    description: "",
+    date: null,
+    usedTravelType: "walking",
+    usedOrigin: "",
+    usedDestination: "",
+    avoidedTravelType: "vehicle",
+    avoidedOrigin: "",
+    avoidedDestination: "",
+    impact: null,
+  });
 
-  // const handleSelect = ({travel.usedOrigin}) => {
-  //   geocodeByAddress(travel.usedOrigin)
-  //     .then((results) => getLatLng(results[0]))
-  //     .then((latLng) => console.log("Success", latLng))
-  //     .catch((error) => console.error("Error", error));
-  // };
+  const onChange = (e) =>
+    setTravel({ ...travel, [e.target.name]: e.target.value });
+
+  // Places Autocomplete: Used Origin
+  const handleUsedOriginSelect = async (value) =>
+    setTravel({ ...travel, usedOrigin: value });
+  const handleUsedOriginChange = (value) =>
+    setTravel({ ...travel, usedOrigin: value });
+
+  // Places Autocomplete: Used Destination
+  const handleUsedDestinationSelect = async (value) =>
+    setTravel({ ...travel, usedDestination: value });
+  const handleUsedDestinationChange = (value) =>
+    setTravel({ ...travel, usedDestination: value });
+
+  // Places Autocomplete: Avoided Origin
+  const handleAvoidedOriginSelect = async (value) =>
+    setTravel({ ...travel, avoidedOrigin: value });
+  const handleAvoidedOriginChange = (value) =>
+    setTravel({ ...travel, avoidedOrigin: value });
+
+  // Places Autocomplete: Avoided Destination
+  const handleAvoidedDestinationSelect = async (value) =>
+    setTravel({ ...travel, avoidedDestination: value });
+  const handleAvoidedDestinationChange = (value) =>
+    setTravel({ ...travel, avoidedDestination: value });
+
+  // Auto fill avoided origin when checked
+  const sameOrigin = () => {
+    if (document.getElementById("same-origin").checked) {
+      setTravel({
+        ...travel,
+        avoidedOrigin: travel.usedOrigin,
+      });
+    }
+  };
+
+  // Auto fill avoided destination when checked
+  const sameDestination = () => {
+    if (document.getElementById("same-destination").checked) {
+      setTravel({
+        ...travel,
+        avoidedDestination: travel.usedDestination,
+      });
+    }
+  };
 
   return (
     <form className="form-container">
@@ -52,6 +101,7 @@ const TravelForm = ({ travel, setTravel, onChange, nextStep }) => {
         />
       </div>
 
+      {/* TRAVEL USED */}
       <div className="card">
         <h2 className="text-left">Travel Used</h2>
         <div className="form-group">
@@ -66,17 +116,10 @@ const TravelForm = ({ travel, setTravel, onChange, nextStep }) => {
         </div>
         <div className="form-group">
           <label htmlFor="usedOrigin">Origin</label>
-          {/* <input
-            type="text"
-            id="usedOrigin"
-            placeholder="Enter a location"
-            onChange={onChange}
-          /> */}
           <PlacesAutocomplete
-            name="usedOrigin"
             value={travel.usedOrigin}
-            onChange={onChange}
-            // onSelect={handleSelect}
+            onChange={handleUsedOriginChange}
+            onSelect={handleUsedOriginSelect}
           >
             {({
               getInputProps,
@@ -84,35 +127,21 @@ const TravelForm = ({ travel, setTravel, onChange, nextStep }) => {
               getSuggestionItemProps,
               loading,
             }) => (
-              // <div>
-              //   <input type="text" placeholder="Enter a location" />
-              // </div>
-
               <div>
-                <input
-                  {...getInputProps({
-                    placeholder: "Search Places ...",
-                    className: "location-search-input",
-                  })}
-                />
-                <div className="autocomplete-dropdown-container">
-                  {loading && <div>Loading...</div>}
+                <input {...getInputProps({ placeholder: "Type address" })} />
+
+                <div>
+                  {loading ? <div>Loading...</div> : null}
+
                   {suggestions.map((suggestion) => {
-                    const className = suggestion.active
-                      ? "suggestion-item--active"
-                      : "suggestion-item";
-                    // inline style for demonstration purpose
-                    const style = suggestion.active
-                      ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                      : { backgroundColor: "#ffffff", cursor: "pointer" };
+                    const style = {
+                      backgroundColor: suggestion.active ? "#003699" : "#fff",
+                      color: suggestion.active ? "#fff" : "#000",
+                    };
+
                     return (
-                      <div
-                        {...getSuggestionItemProps(suggestion, {
-                          className,
-                          style,
-                        })}
-                      >
-                        <span>{suggestion.description}</span>
+                      <div {...getSuggestionItemProps(suggestion, { style })}>
+                        {suggestion.description}
                       </div>
                     );
                   })}
@@ -123,11 +152,145 @@ const TravelForm = ({ travel, setTravel, onChange, nextStep }) => {
         </div>
         <div className="form-group">
           <label htmlFor="usedDestination">Destination</label>
+          <PlacesAutocomplete
+            value={travel.usedDestination}
+            onChange={handleUsedDestinationChange}
+            onSelect={handleUsedDestinationSelect}
+          >
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <div>
+                <input {...getInputProps({ placeholder: "Type address" })} />
+
+                <div>
+                  {loading ? <div>Loading...</div> : null}
+
+                  {suggestions.map((suggestion) => {
+                    const style = {
+                      backgroundColor: suggestion.active ? "#003699" : "#fff",
+                      color: suggestion.active ? "#fff" : "#000",
+                    };
+
+                    return (
+                      <div {...getSuggestionItemProps(suggestion, { style })}>
+                        {suggestion.description}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
+        </div>
+      </div>
+
+      {/* TRAVEL AVOIDED */}
+      <div className="card">
+        <h2 className="text-left">Travel Avoided</h2>
+        <div className="form-group">
+          <label>Travel type</label>
+          <select name="usedTravelType" onChange={onChange}>
+            <option value="vehicle">Vehicle</option>
+            <option value="transit" disabled>
+              Transit (coming soon)
+            </option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="avoidedOrigin">Origin</label>
+          <PlacesAutocomplete
+            value={travel.avoidedOrigin}
+            onChange={handleAvoidedOriginChange}
+            onSelect={handleAvoidedOriginSelect}
+          >
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <div>
+                <input {...getInputProps({ placeholder: "Type address" })} />
+
+                <div>
+                  {loading ? <div>Loading...</div> : null}
+
+                  {suggestions.map((suggestion) => {
+                    const style = {
+                      backgroundColor: suggestion.active ? "#003699" : "#fff",
+                      color: suggestion.active ? "#fff" : "#000",
+                    };
+
+                    return (
+                      <div {...getSuggestionItemProps(suggestion, { style })}>
+                        {suggestion.description}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
           <input
-            type="text"
-            id="usedDestination"
-            placeholder="Enter a location"
-          />
+            class="m"
+            type="checkbox"
+            name="same-origin"
+            id="same-origin"
+            onChange={sameOrigin}
+          ></input>
+          <label class="m" for="same-origin">
+            Same origin as travel used
+          </label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="avoidedDestination">Destination</label>
+          <PlacesAutocomplete
+            value={travel.avoidedDestination}
+            onChange={handleAvoidedDestinationChange}
+            onSelect={handleAvoidedDestinationSelect}
+          >
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <div>
+                <input {...getInputProps({ placeholder: "Type address" })} />
+
+                <div>
+                  {loading ? <div>Loading...</div> : null}
+
+                  {suggestions.map((suggestion) => {
+                    const style = {
+                      backgroundColor: suggestion.active ? "#003699" : "#fff",
+                      color: suggestion.active ? "#fff" : "#000",
+                    };
+
+                    return (
+                      <div {...getSuggestionItemProps(suggestion, { style })}>
+                        {suggestion.description}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
+          <input
+            class="m"
+            type="checkbox"
+            name="same-destination"
+            id="same-destination"
+            onChange={sameDestination}
+          ></input>
+          <label class="m" for="same-destination">
+            Same destination as travel used
+          </label>
         </div>
       </div>
 
@@ -136,10 +299,6 @@ const TravelForm = ({ travel, setTravel, onChange, nextStep }) => {
           type="submit"
           value="Calculate Impact"
           className="btn btn-primary btn-block"
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   setStep({ step: step + 1 })
-          // }}
         />
       </div>
     </form>
