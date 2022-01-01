@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/db");
+require("dotenv").config();
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.get("/", (req, res) =>
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/actions", require("./routes/actions"));
+app.use("/api/carbon-interface", require("./routes/carbon-interface"));
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

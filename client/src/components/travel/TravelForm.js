@@ -65,6 +65,8 @@ const TravelForm = () => {
     }
   };
 
+  // Populate 'Vehicle Make' Dropdown
+
   return (
     <form className="form-container">
       <h2 className="text-primary">Travel Action</h2>
@@ -192,13 +194,17 @@ const TravelForm = () => {
       <div className="card">
         <h2 className="text-left">Travel Avoided</h2>
         <div className="form-group">
-          <label>Travel type</label>
+          <label htmlFor="usedTravelType">Travel type</label>
           <select name="usedTravelType" onChange={onChange}>
             <option value="vehicle">Vehicle</option>
             <option value="transit" disabled>
               Transit (coming soon)
             </option>
           </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="vehicleMake">Vehicle Make</label>
+          <select name="vehicleMake"></select>
         </div>
         <div className="form-group">
           <label htmlFor="avoidedOrigin">Origin</label>
@@ -214,7 +220,10 @@ const TravelForm = () => {
               loading,
             }) => (
               <div>
-                <input {...getInputProps({ placeholder: "Type address" })} />
+                <input
+                  name="avoidedOrigin"
+                  {...getInputProps({ placeholder: "Type address" })}
+                />
 
                 <div>
                   {loading ? <div>Loading...</div> : null}
