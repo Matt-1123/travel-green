@@ -14,11 +14,12 @@ const TravelForm = () => {
     usedOrigin: "",
     usedDestination: "",
     avoidedTravelType: "",
-    vehicleMakes: [],
     avoidedOrigin: "",
     avoidedDestination: "",
     impact: null,
   });
+
+  const [vehicleMakes, setVehicleMakes] = useState([]);
 
   // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
   useEffect(() => {
@@ -32,24 +33,28 @@ const TravelForm = () => {
             id: make.data.id,
           });
         });
-        console.log(arr);
-        setTravel({
-          ...travel,
-          vehicleMakes: arr,
-        });
+        setVehicleMakes(arr);
       } catch (err) {
         console.error(err);
       }
     };
 
-    if (
-      travel.vehicleMakes.length === 0 &&
-      travel.avoidedTravelType === "vehicle"
-    ) {
-      //console.log(travel.vehicleMakes);
+    if (vehicleMakes.length === 0 && travel.avoidedTravelType === "vehicle") {
       getVehicleMakes();
     }
   }, [travel]);
+
+  useEffect(() => {
+    // create array of options to add to vehicle makes dropdown
+    let makeOptions = [];
+    vehicleMakes.map((make) => {
+      makeOptions.push(
+        <option key={make.id} value={make.id}>
+          {make.name}
+        </option>
+      );
+    });
+  }, [vehicleMakes]);
 
   const onChange = (e) =>
     setTravel({ ...travel, [e.target.name]: e.target.value });
@@ -240,6 +245,11 @@ const TravelForm = () => {
           <label htmlFor="vehicleMake">Vehicle Make</label>
           <select name="vehicleMake">
             <option value="">Select a vehicle make</option>
+            {vehicleMakes.map((make) => (
+              <option key={make.id} value={make.id}>
+                {make.name}
+              </option>
+            ))}
           </select>
         </div>
         <div className="form-group">
