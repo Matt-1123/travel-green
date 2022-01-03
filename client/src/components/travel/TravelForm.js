@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -8,15 +9,47 @@ const TravelForm = () => {
   const [travel, setTravel] = useState({
     title: "",
     description: "",
-    date: null,
+    date: "",
     usedTravelType: "walking",
     usedOrigin: "",
     usedDestination: "",
-    avoidedTravelType: "vehicle",
+    avoidedTravelType: "",
+    vehicleMakes: [],
     avoidedOrigin: "",
     avoidedDestination: "",
     impact: null,
   });
+
+  // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
+  useEffect(() => {
+    const getVehicleMakes = async () => {
+      try {
+        const res = await axios.get("/api/carbon-interface");
+        let arr = [];
+        res.data.forEach((make) => {
+          arr.push({
+            name: make.data.attributes.name,
+            id: make.data.id,
+          });
+        });
+        console.log(arr);
+        setTravel({
+          ...travel,
+          vehicleMakes: arr,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (
+      travel.vehicleMakes.length === 0 &&
+      travel.avoidedTravelType === "vehicle"
+    ) {
+      //console.log(travel.vehicleMakes);
+      getVehicleMakes();
+    }
+  }, [travel]);
 
   const onChange = (e) =>
     setTravel({ ...travel, [e.target.name]: e.target.value });
@@ -65,7 +98,7 @@ const TravelForm = () => {
     }
   };
 
-  // Populate 'Vehicle Make' Dropdown
+  // Vehicle Make Filter
 
   return (
     <form className="form-container">
@@ -194,8 +227,9 @@ const TravelForm = () => {
       <div className="card">
         <h2 className="text-left">Travel Avoided</h2>
         <div className="form-group">
-          <label htmlFor="usedTravelType">Travel type</label>
-          <select name="usedTravelType" onChange={onChange}>
+          <label htmlFor="avoidedTravelType">Travel type</label>
+          <select name="avoidedTravelType" onChange={onChange}>
+            <option value="">Select a travel type</option>
             <option value="vehicle">Vehicle</option>
             <option value="transit" disabled>
               Transit (coming soon)
@@ -204,7 +238,9 @@ const TravelForm = () => {
         </div>
         <div className="form-group">
           <label htmlFor="vehicleMake">Vehicle Make</label>
-          <select name="vehicleMake"></select>
+          <select name="vehicleMake">
+            <option value="">Select a vehicle make</option>
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="avoidedOrigin">Origin</label>
@@ -245,13 +281,13 @@ const TravelForm = () => {
             )}
           </PlacesAutocomplete>
           <input
-            class="m"
+            className="m"
             type="checkbox"
             name="same-origin"
             id="same-origin"
             onChange={sameOrigin}
           ></input>
-          <label class="m" for="same-origin">
+          <label className="m" htmlFor="same-origin">
             Same origin as travel used
           </label>
         </div>
@@ -291,13 +327,13 @@ const TravelForm = () => {
             )}
           </PlacesAutocomplete>
           <input
-            class="m"
+            className="m"
             type="checkbox"
             name="same-destination"
             id="same-destination"
             onChange={sameDestination}
           ></input>
-          <label class="m" for="same-destination">
+          <label className="m" htmlFor="same-destination">
             Same destination as travel used
           </label>
         </div>
