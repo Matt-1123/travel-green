@@ -4,6 +4,8 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
+import ComboBox from "react-responsive-combo-box";
+import "react-responsive-combo-box/dist/index.css";
 
 const TravelForm = () => {
   const [travel, setTravel] = useState({
@@ -20,6 +22,8 @@ const TravelForm = () => {
   });
 
   const [vehicleMakes, setVehicleMakes] = useState([]);
+
+  const [selectedMake, setSelectedMake] = useState("");
 
   // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
   useEffect(() => {
@@ -48,7 +52,7 @@ const TravelForm = () => {
     // create array of options to add to vehicle makes dropdown
     let makeOptions = [];
     vehicleMakes.map((make) => {
-      makeOptions.push(
+      return makeOptions.push(
         <option key={make.id} value={make.id}>
           {make.name}
         </option>
@@ -241,16 +245,26 @@ const TravelForm = () => {
             </option>
           </select>
         </div>
-        <div className="form-group">
+        <div
+          style={{
+            display: travel.avoidedTravelType === "vehicle" ? "block" : "none",
+          }}
+          className="form-group"
+        >
           <label htmlFor="vehicleMake">Vehicle Make</label>
-          <select name="vehicleMake">
+          {/* <select name="vehicleMake">
             <option value="">Select a vehicle make</option>
             {vehicleMakes.map((make) => (
               <option key={make.id} value={make.id}>
                 {make.name}
               </option>
             ))}
-          </select>
+          </select> */}
+          <ComboBox
+            options={vehicleMakes.map((make) => make.name)}
+            enableAutocomplete
+            onSelect={(option) => setSelectedMake(option)}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="avoidedOrigin">Origin</label>
