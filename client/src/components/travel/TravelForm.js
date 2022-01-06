@@ -18,18 +18,16 @@ const TravelForm = () => {
     avoidedTravelType: "",
     avoidedOrigin: "",
     avoidedDestination: "",
-    impact: null,
   });
 
   const [vehicleMakes, setVehicleMakes] = useState([]);
-
   const [selectedMake, setSelectedMake] = useState("");
 
   // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
   useEffect(() => {
     const getVehicleMakes = async () => {
       try {
-        const res = await axios.get("/api/carbon-interface");
+        const res = await axios.get("/api/carbon-interface/makes");
         let arr = [];
         res.data.forEach((make) => {
           arr.push({
@@ -59,6 +57,19 @@ const TravelForm = () => {
       );
     });
   }, [vehicleMakes]);
+
+  // When selectedMake is updated, get models data from GET /carbon-interface.
+  // Then populate vehicle models dropdown
+  useEffect(() => {
+    const getVehicleModels = async () => {
+      try {
+        const res = await axios.get("/api/carbon-interface/models");
+        console.log(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  }, [selectedMake]);
 
   const onChange = (e) =>
     setTravel({ ...travel, [e.target.name]: e.target.value });
@@ -245,27 +256,49 @@ const TravelForm = () => {
             </option>
           </select>
         </div>
-        <div
-          style={{
-            display: travel.avoidedTravelType === "vehicle" ? "block" : "none",
-          }}
-          className="form-group"
-        >
-          <label htmlFor="vehicleMake">Vehicle Make</label>
-          {/* <select name="vehicleMake">
-            <option value="">Select a vehicle make</option>
-            {vehicleMakes.map((make) => (
-              <option key={make.id} value={make.id}>
-                {make.name}
-              </option>
-            ))}
-          </select> */}
-          <ComboBox
-            options={vehicleMakes.map((make) => make.name)}
-            enableAutocomplete
-            onSelect={(option) => setSelectedMake(option)}
-          />
+
+        <div className="grid-2">
+          {/* Vehicle Makes Dropdown */}
+          <div
+            style={{
+              display:
+                travel.avoidedTravelType === "vehicle" ? "block" : "none",
+            }}
+            className="form-group"
+          >
+            <label htmlFor="vehicleMake">Vehicle Make</label>
+            {/* <select name="vehicleMake">
+              <option value="">Select a vehicle make</option>
+              {vehicleMakes.map((make) => (
+                <option key={make.id} value={make.id}>
+                  {make.name}
+                </option>
+              ))}
+            </select> */}
+            <ComboBox
+              options={vehicleMakes.map((make) => make.name)}
+              enableAutocomplete
+              onChange={(option) => setSelectedMake(option)}
+              onSelect={(option) => setSelectedMake(option)}
+            />
+          </div>
+
+          {/* Vehicle Models Dropdown */}
+          <div
+            style={{
+              display: !selectedMake ? "none" : "block",
+            }}
+            className="form-group"
+          >
+            <label htmlFor="vehicleModel">Vehicle Model</label>
+            <ComboBox
+              options={[1, 2, 3]}
+              enableAutocomplete
+              onSelect={(option) => console.log("model selected")}
+            />
+          </div>
         </div>
+
         <div className="form-group">
           <label htmlFor="avoidedOrigin">Origin</label>
           <PlacesAutocomplete
