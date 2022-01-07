@@ -9,24 +9,14 @@ const TravelState = (props) => {
   const initialState = {
     travelActions: [
       {
+        user: { name: "Matt Russo" },
         id: 1,
         title: "Morning Commute",
         description:
           "Nice day. Decided to walk instead of taking the car to work.",
-        date: Date.now(),
-      },
-      {
-        id: 2,
-        title: "Afternoon Commute",
-        description:
-          "Nice day. Decided to walk instead of taking the car to work.",
-        date: Date.now(),
-      },
-      {
-        id: 3,
-        title: "Test Post",
-        description: "Lorem ipsum dolor sit.",
-        date: Date.now(),
+        date: "January 1, 2022",
+        usedTravelType: "walking",
+        avoidedTravelType: "driving",
       },
     ],
   };

@@ -16,7 +16,7 @@ const App = () => {
         <Router>
           <Fragment>
             <Navbar />
-            <div className="container">
+            <div className="container container-dark">
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/about" element={<About />} />
