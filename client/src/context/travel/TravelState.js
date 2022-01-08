@@ -18,6 +18,16 @@ const TravelState = (props) => {
         usedTravelType: "walking",
         avoidedTravelType: "driving",
       },
+      {
+        user: { name: "Matt Russo" },
+        id: 2,
+        title: "Morning Commute",
+        description:
+          "Nice day. Decided to walk instead of taking the car to work.",
+        date: "January 1, 2022",
+        usedTravelType: "bicycling",
+        avoidedTravelType: "driving",
+      },
     ],
   };
 

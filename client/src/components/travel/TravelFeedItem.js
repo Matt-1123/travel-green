@@ -1,32 +1,32 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWalking, faBicycle } from "@fortawesome/free-solid-svg-icons";
 import TravelContext from "../../context/travel/travelContext";
 
 const TravelFeedItem = ({ action }) => {
   const travelContext = useContext(TravelContext);
 
-  const { user, title, description, date } = action;
+  const { user, title, description, date, usedTravelType } = action;
 
   return (
     <div className="card bg-dark">
       <div className="flex mb">
-        <img src="" alt="" class="mr-1" style={styles.avatar} />
+        <img src="" alt="" className="mr-1" style={styles.avatar} />
         <div style={styles.meta}>
-          <p class="small">{user.name}</p>
-          <p class="small">{date}</p>
+          <p className="font-sm">{user.name}</p>
+          <p className="font-sm">{date}</p>
         </div>
       </div>
-      <h3 className="text-primary text-left">{title}</h3>
-      <ul className="list">
-        {description && (
-          <li>
-            <p>{description}</p>
-          </li>
+      <div className="flex" style={{ alignItems: "center" }}>
+        {/* <img src="" alt="" className="mr-1" style={styles.icon} /> */}
+        {usedTravelType === "walking" ? (
+          <FontAwesomeIcon icon={faWalking} className="icon-primary" />
+        ) : (
+          <FontAwesomeIcon icon={faBicycle} className="icon-primary" />
         )}
-        <li>
-          <p>{date}</p>
-        </li>
-      </ul>
+        <h3 className="font-md ml-1"> {title}</h3>
+      </div>
     </div>
   );
 };
@@ -46,6 +46,11 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+  },
+  icon: {
+    height: "1rem",
+    width: "1rem",
+    border: "1px solid #fff",
   },
 };
 
