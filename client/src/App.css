@@ -18,6 +18,17 @@
   padding: 0;
 }
 
+/* Resets */
+button {
+  background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
@@ -59,7 +70,7 @@ img {
 }
 
 .font-lg {
-  font-size: 3rem;
+  font-size: 2rem;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -84,6 +95,7 @@ img {
 
 .text-primary {
   color: var(--primary-color);
+  font-weight: 700;
 }
 
 .text-dark {
@@ -212,6 +224,10 @@ img {
 }
 
 /* Grid */
+.grid {
+  display: grid;
+  grid-gap: 1rem;
+}
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

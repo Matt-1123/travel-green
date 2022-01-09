@@ -11,22 +11,28 @@ const TravelState = (props) => {
       {
         user: { name: "Matt Russo" },
         id: 1,
+        carbonPrevented: 10,
         title: "Morning Commute",
         description:
           "Nice day. Decided to walk instead of taking the car to work.",
         date: "January 1, 2022",
         usedTravelType: "walking",
+        usedDistance: 2,
         avoidedTravelType: "driving",
+        avoidedDistance: 2,
       },
       {
         user: { name: "Matt Russo" },
         id: 2,
+        carbonPrevented: 5.5,
         title: "Morning Commute",
         description:
           "Nice day. Decided to walk instead of taking the car to work.",
         date: "January 1, 2022",
         usedTravelType: "bicycling",
+        usedDistance: 8,
         avoidedTravelType: "driving",
+        avoidedDistance: 11,
       },
     ],
   };
