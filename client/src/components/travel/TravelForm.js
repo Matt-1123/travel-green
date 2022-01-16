@@ -21,7 +21,7 @@ const TravelForm = () => {
   });
 
   const [vehicleMakes, setVehicleMakes] = useState([]);
-  const [selectedMake, setSelectedMake] = useState("");
+  const [selectedMake, setSelectedMake] = useState({});
 
   // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
   useEffect(() => {
@@ -61,14 +61,18 @@ const TravelForm = () => {
   // When selectedMake is updated, get models data from GET /carbon-interface.
   // Then populate vehicle models dropdown
   useEffect(() => {
-    const getVehicleModels = async () => {
+    console.log(`selected make id: ${selectedMake.id}`);
+
+    const getVehicleModels = async (makeid) => {
       try {
-        const res = await axios.get("/api/carbon-interface/models");
+        const res = await axios.get(`/api/carbon-interface/models/${makeid}`);
         console.log(res.data);
       } catch (err) {
         console.error(err);
       }
     };
+
+    getVehicleModels(selectedMake.id);
   }, [selectedMake]);
 
   const onChange = (e) =>
@@ -118,11 +122,15 @@ const TravelForm = () => {
     }
   };
 
-  // Vehicle Make Filter
+  // On vehicle make change, set selectedMake to make object from Carbon Interface
+  const handleSelectedMake = (makeName) => {
+    const selectedMake = vehicleMakes.find((make) => make.name === makeName);
+    setSelectedMake(selectedMake);
+  };
 
   return (
-    <form className="form-container">
-      <h2 className="text-primary">Travel Action</h2>
+    <form className="form-container bg-dark">
+      <h2 className="text-primary font-lg">Travel Action</h2>
       <div className="form-group">
         <label htmlFor="title">Title</label>
         <input
@@ -278,8 +286,8 @@ const TravelForm = () => {
             <ComboBox
               options={vehicleMakes.map((make) => make.name)}
               enableAutocomplete
-              onChange={(option) => setSelectedMake(option)}
-              onSelect={(option) => setSelectedMake(option)}
+              onChange={(option) => handleSelectedMake(option)}
+              onSelect={(option) => handleSelectedMake(option)}
             />
           </div>
 

@@ -24,13 +24,13 @@ router.get("/makes", async (req, res) => {
   }
 });
 
-// @route     GET api/carbon-interface/models
+// @route     GET api/carbon-interface/models/:makeid
 // @desc      Get vehicle models
 // @access    Public
-router.get("/models", async (req, res) => {
+router.get("/models/:makeid", async (req, res) => {
   try {
     const response = await axios.get(
-      `https://www.carboninterface.com/api/v1/vehicle_makes/${make}/vehicle_models`,
+      `https://www.carboninterface.com/api/v1/vehicle_makes/${req.params.makeid}/vehicle_models`,
       {
         headers: {
           Authorization: `Bearer ${config.CARBON_INTERFACE_BEARER_TOKEN}`,
