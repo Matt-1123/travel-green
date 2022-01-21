@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const cors = require("cors");
 
 // @route     GET api/carbon-interface/makes
 // @desc      Get vehicle makes
@@ -28,9 +29,15 @@ router.get("/makes", async (req, res) => {
 // @desc      Get vehicle models
 // @access    Public
 router.get("/models/:makeid", async (req, res) => {
+  const makeId = req.params.makeid;
+
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+  });
+
   try {
     const response = await axios.get(
-      `https://www.carboninterface.com/api/v1/vehicle_makes/${req.params.makeid}/vehicle_models`,
+      `https://www.carboninterface.com/api/v1/vehicle_makes/${makeId}/vehicle_models`,
       {
         headers: {
           Authorization: `Bearer ${config.CARBON_INTERFACE_BEARER_TOKEN}`,
@@ -39,7 +46,9 @@ router.get("/models/:makeid", async (req, res) => {
       }
     );
 
+    console.log(res.get("Access-Control-Allow-Origin"));
     console.log(response.data);
+    res.json(response.data);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send(err);

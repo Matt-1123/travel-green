@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,7 @@ import TravelContext from "../../context/travel/travelContext";
 
 const TravelFeedItem = ({ action }) => {
   const travelContext = useContext(TravelContext);
+  const [options, setOptions] = useState(false);
 
   const {
     user,
@@ -26,13 +27,25 @@ const TravelFeedItem = ({ action }) => {
     avoidedDistance,
   } = action;
 
+  const handleOptions = () => {
+    console.log("options clicked");
+    setOptions(!options);
+  };
+
   return (
     <div className="card bg-dark" style={{ position: "relative" }}>
-      <div style={styles.settings}>
-        <button style={{ marginRight: "0.5rem" }}>
+      <div
+        style={{
+          display: options ? "block" : "none",
+          position: "absolute",
+          top: "1rem",
+          right: "3rem",
+        }}
+      >
+        <button style={{ marginRight: "10px" }}>
           <FontAwesomeIcon icon={faEdit} style={{ color: "#999" }} />
         </button>
-        <Link to="/" style={{ marginRight: "0.5rem" }}>
+        <Link to="/" style={{ marginRight: "10px" }}>
           <FontAwesomeIcon icon={faTrash} style={{ color: "#dc3545" }} />
         </Link>
       </div>
@@ -42,10 +55,12 @@ const TravelFeedItem = ({ action }) => {
           <p className="font-sm">{user.name}</p>
           <p className="font-sm">{date}</p>
         </div>
-        <FontAwesomeIcon
-          icon={faEllipsisH}
-          style={{ color: "#555", justifySelf: "end" }}
-        />
+        <button style={{ height: "1rem" }} onClick={handleOptions}>
+          <FontAwesomeIcon
+            icon={faEllipsisH}
+            style={{ color: "#555", justifySelf: "end" }}
+          />
+        </button>
       </div>
       <div className="flex" style={{ alignItems: "center" }}>
         {/* <img src="" alt="" className="mr-1" style={styles.icon} /> */}
@@ -81,7 +96,7 @@ TravelFeedItem.propTypes = {
 
 const styles = {
   topWrapper: {
-    gridTemplateColumns: "42px 2fr 1fr",
+    gridTemplateColumns: "42px 1fr auto",
   },
   avatar: {
     height: "42px",
@@ -93,12 +108,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-  },
-  settings: {
-    display: "block",
-    position: "absolute",
-    top: "0.5rem",
-    right: "3rem",
   },
   icon: {
     height: "1rem",

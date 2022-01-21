@@ -58,21 +58,32 @@ const TravelForm = () => {
     });
   }, [vehicleMakes]);
 
-  // When selectedMake is updated, get models data from GET /carbon-interface.
+  // When selectedMake is updated, get models data from GET /carbon-interface route.
   // Then populate vehicle models dropdown
   useEffect(() => {
-    console.log(`selected make id: ${selectedMake.id}`);
+    const getVehicleModels = async () => {
+      // res.set({
+      //   "Access-Control-Allow-Origin": "*",
+      // });
 
-    const getVehicleModels = async (makeid) => {
       try {
-        const res = await axios.get(`/api/carbon-interface/models/${makeid}`);
-        console.log(res.data);
+        const response = await axios.get(
+          `/api/carbon-interface/models/${selectedMake.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        );
+        console.log(response.data);
       } catch (err) {
+        console.log(`/api/carbon-interface/models/${selectedMake.id}`);
         console.error(err);
       }
     };
 
-    getVehicleModels(selectedMake.id);
+    getVehicleModels();
   }, [selectedMake]);
 
   const onChange = (e) =>
@@ -284,6 +295,7 @@ const TravelForm = () => {
               ))}
             </select> */}
             <ComboBox
+              className="text-primary"
               options={vehicleMakes.map((make) => make.name)}
               enableAutocomplete
               onChange={(option) => handleSelectedMake(option)}
@@ -294,12 +306,13 @@ const TravelForm = () => {
           {/* Vehicle Models Dropdown */}
           <div
             style={{
-              display: !selectedMake ? "none" : "block",
+              display: selectedMake === {} ? "none" : "block",
             }}
             className="form-group"
           >
             <label htmlFor="vehicleModel">Vehicle Model</label>
             <ComboBox
+              className="text-dark"
               options={[1, 2, 3]}
               enableAutocomplete
               onSelect={(option) => console.log("model selected")}
