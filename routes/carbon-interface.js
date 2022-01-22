@@ -40,7 +40,7 @@ router.get("/models/:makeid", async (req, res) => {
       `https://www.carboninterface.com/api/v1/vehicle_makes/${makeId}/vehicle_models`,
       {
         headers: {
-          Authorization: `Bearer ${config.CARBON_INTERFACE_BEARER_TOKEN}`,
+          Authorization: `Bearer ${process.env.REACT_APP_CARBON_INTERFACE_BEARER_TOKEN}`,
           "Content-Type": "application/json",
         },
       }

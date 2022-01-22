@@ -62,10 +62,6 @@ const TravelForm = () => {
   // Then populate vehicle models dropdown
   useEffect(() => {
     const getVehicleModels = async () => {
-      // res.set({
-      //   "Access-Control-Allow-Origin": "*",
-      // });
-
       try {
         const response = await axios.get(
           `/api/carbon-interface/models/${selectedMake.id}`,
@@ -133,10 +129,14 @@ const TravelForm = () => {
     }
   };
 
-  // On vehicle make change, set selectedMake to make object from Carbon Interface
+  // On vehicle make change, set selectedMake to make object from Carbon Interface.
+  // Only call setSelectedMake if there is a vehicle make match. Otherwise selectedMake will be undefined and cause an error.
   const handleSelectedMake = (makeName) => {
     const selectedMake = vehicleMakes.find((make) => make.name === makeName);
-    setSelectedMake(selectedMake);
+
+    if (selectedMake) {
+      setSelectedMake(selectedMake);
+    }
   };
 
   return (
@@ -306,7 +306,8 @@ const TravelForm = () => {
           {/* Vehicle Models Dropdown */}
           <div
             style={{
-              display: selectedMake === {} ? "none" : "block",
+              display:
+                travel.avoidedTravelType === "vehicle" ? "block" : "none",
             }}
             className="form-group"
           >
