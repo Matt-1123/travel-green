@@ -23,6 +23,9 @@ const TravelForm = () => {
   const [vehicleMakes, setVehicleMakes] = useState([]);
   const [selectedMake, setSelectedMake] = useState({});
 
+  const [vehicleModels, setVehicleModels] = useState([]);
+  const [selectedModel, setSelectedModel] = useState([]);
+
   // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
   useEffect(() => {
     const getVehicleMakes = async () => {
@@ -63,7 +66,7 @@ const TravelForm = () => {
   useEffect(() => {
     const getVehicleModels = async () => {
       try {
-        const response = await axios.get(
+        const res = await axios.get(
           `/api/carbon-interface/models/${selectedMake.id}`,
           {
             headers: {
@@ -72,7 +75,18 @@ const TravelForm = () => {
             },
           }
         );
-        console.log(response.data);
+        console.log(res.data);
+
+        const modelsArr = [];
+        res.data.forEach((model) => {
+          modelsArr.push({
+            name: model.data.attributes.name,
+            year: model.data.attributes.year,
+            id: model.data.id,
+          });
+        });
+
+        setVehicleModels(modelsArr);
       } catch (err) {
         console.log(`/api/carbon-interface/models/${selectedMake.id}`);
         console.error(err);
@@ -136,6 +150,16 @@ const TravelForm = () => {
 
     if (selectedMake) {
       setSelectedMake(selectedMake);
+    }
+  };
+
+  const handleSelectedModel = (option) => {
+    const selectedModel = vehicleModels.find(
+      (model) => `${model.name} ${model.year} (${model.id})` === option
+    );
+
+    if (selectedModel) {
+      setSelectedModel(selectedModel);
     }
   };
 
@@ -280,6 +304,7 @@ const TravelForm = () => {
           {/* Vehicle Makes Dropdown */}
           <div
             style={{
+              margin: "0 auto",
               display:
                 travel.avoidedTravelType === "vehicle" ? "block" : "none",
             }}
@@ -306,6 +331,7 @@ const TravelForm = () => {
           {/* Vehicle Models Dropdown */}
           <div
             style={{
+              margin: "0 auto",
               display:
                 travel.avoidedTravelType === "vehicle" ? "block" : "none",
             }}
@@ -313,10 +339,13 @@ const TravelForm = () => {
           >
             <label htmlFor="vehicleModel">Vehicle Model</label>
             <ComboBox
-              className="text-dark"
-              options={[1, 2, 3]}
+              className="text-primary"
+              options={vehicleModels.map(
+                (model) => `${model.name} ${model.year} (${model.id})`
+              )}
               enableAutocomplete
-              onSelect={(option) => console.log("model selected")}
+              onChange={(option) => handleSelectedModel(option)}
+              onSelect={(option) => handleSelectedModel(option)}
             />
           </div>
         </div>
