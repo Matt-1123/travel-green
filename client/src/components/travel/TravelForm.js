@@ -164,7 +164,7 @@ const TravelForm = () => {
   };
 
   return (
-    <form className="form-container bg-dark">
+    <form className="container-narrow bg-dark">
       <h2 className="text-primary font-lg">Travel Action</h2>
       <div className="form-group">
         <label htmlFor="title">Title</label>
