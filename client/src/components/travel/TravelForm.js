@@ -6,8 +6,11 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import ComboBox from "react-responsive-combo-box";
 import "react-responsive-combo-box/dist/index.css";
+import { useNavigate } from "react-router-dom";
 
 const TravelForm = () => {
+  let navigate = useNavigate();
+
   const [travel, setTravel] = useState({
     title: "",
     description: "",
@@ -163,11 +166,19 @@ const TravelForm = () => {
     }
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    navigate("/add-travel/summary", {
+      state: { title: travel.title, date: travel.date },
+    });
+  };
+
   return (
-    <form className="container-narrow bg-dark">
+    <form className="container-narrow bg-dark" onSubmit={onSubmit}>
       <h2 className="text-primary font-lg">Travel Action</h2>
       <div className="form-group">
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">Title*</label>
         <input
           id="title"
           type="text"
@@ -175,6 +186,7 @@ const TravelForm = () => {
           placeholder="Title"
           value={travel.title}
           onChange={onChange}
+          required
         />
       </div>
       <div className="form-group">
@@ -189,13 +201,14 @@ const TravelForm = () => {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="date">Date</label>
+        <label htmlFor="date">Date*</label>
         <input
           id="date"
           type="date"
           name="date"
           value={travel.date}
           onChange={onChange}
+          required
         />
       </div>
 
@@ -203,8 +216,8 @@ const TravelForm = () => {
       <div className="card">
         <h2 className="text-left">Travel Used</h2>
         <div className="form-group">
-          <label>Travel type</label>
-          <select name="usedTravelType" onChange={onChange}>
+          <label>Travel type*</label>
+          <select name="usedTravelType" onChange={onChange} required>
             <option value="walking">Walking</option>
             <option value="bicycling">Bicycling</option>
             <option value="transit" disabled>
@@ -213,7 +226,7 @@ const TravelForm = () => {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="usedOrigin">Origin</label>
+          <label htmlFor="usedOrigin">Origin*</label>
           <PlacesAutocomplete
             value={travel.usedOrigin}
             onChange={handleUsedOriginChange}
@@ -249,7 +262,7 @@ const TravelForm = () => {
           </PlacesAutocomplete>
         </div>
         <div className="form-group">
-          <label htmlFor="usedDestination">Destination</label>
+          <label htmlFor="usedDestination">Destination*</label>
           <PlacesAutocomplete
             value={travel.usedDestination}
             onChange={handleUsedDestinationChange}
@@ -290,8 +303,8 @@ const TravelForm = () => {
       <div className="card">
         <h2 className="text-left">Travel Avoided</h2>
         <div className="form-group">
-          <label htmlFor="avoidedTravelType">Travel type</label>
-          <select name="avoidedTravelType" onChange={onChange}>
+          <label htmlFor="avoidedTravelType">Travel type*</label>
+          <select name="avoidedTravelType" onChange={onChange} required>
             <option value="">Select a travel type</option>
             <option value="vehicle">Vehicle</option>
             <option value="transit" disabled>
@@ -310,7 +323,7 @@ const TravelForm = () => {
             }}
             className="form-group"
           >
-            <label htmlFor="vehicleMake">Vehicle Make</label>
+            <label htmlFor="vehicleMake">Vehicle Make*</label>
             {/* <select name="vehicleMake">
               <option value="">Select a vehicle make</option>
               {vehicleMakes.map((make) => (
@@ -325,6 +338,7 @@ const TravelForm = () => {
               enableAutocomplete
               onChange={(option) => handleSelectedMake(option)}
               onSelect={(option) => handleSelectedMake(option)}
+              required
             />
           </div>
 
@@ -337,7 +351,7 @@ const TravelForm = () => {
             }}
             className="form-group"
           >
-            <label htmlFor="vehicleModel">Vehicle Model</label>
+            <label htmlFor="vehicleModel">Vehicle Model*</label>
             <ComboBox
               className="text-primary"
               options={vehicleModels.map(
@@ -346,12 +360,13 @@ const TravelForm = () => {
               enableAutocomplete
               onChange={(option) => handleSelectedModel(option)}
               onSelect={(option) => handleSelectedModel(option)}
+              required
             />
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="avoidedOrigin">Origin</label>
+          <label htmlFor="avoidedOrigin">Origin*</label>
           <PlacesAutocomplete
             value={travel.avoidedOrigin}
             onChange={handleAvoidedOriginChange}
@@ -400,7 +415,7 @@ const TravelForm = () => {
           </label>
         </div>
         <div className="form-group">
-          <label htmlFor="avoidedDestination">Destination</label>
+          <label htmlFor="avoidedDestination">Destination*</label>
           <PlacesAutocomplete
             value={travel.avoidedDestination}
             onChange={handleAvoidedDestinationChange}
@@ -454,6 +469,8 @@ const TravelForm = () => {
           className="btn btn-primary btn-block"
         />
       </div>
+
+      <p className="font-sm">* required</p>
     </form>
   );
 };
