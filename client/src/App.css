@@ -56,10 +56,10 @@ img {
 
 /* Utilities */
 .container {
+  width: 90%;
   max-width: 1100px;
-  margin: auto;
-  overflow: hidden;
-  padding: 0 2rem;
+  margin: 0 auto;
+  /* overflow: hidden; */
 }
 
 .container-narrow {
@@ -442,8 +442,7 @@ table th {
   background: var(--light-color);
 }
 
-/* Navbar */
-.navbar {
+/* .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -453,7 +452,7 @@ table th {
   border-bottom: solid 1px var(--primary-color);
   opacity: 0.9;
   margin-bottom: 1rem;
-}
+} */
 
 .navbar ul {
   display: flex;
@@ -513,20 +512,5 @@ table th {
 
   .lead {
     font-size: 1rem;
-  }
-
-  /* Navbar */
-  .navbar {
-    display: block;
-    text-align: center;
-  }
-
-  .navbar h1 {
-    margin-bottom: 0.6rem;
-  }
-
-  .navbar ul {
-    text-align: center;
-    justify-content: center;
   }
 }

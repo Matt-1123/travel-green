@@ -26,7 +26,7 @@ router.get("/makes", async (req, res) => {
 });
 
 // @route     GET api/carbon-interface/models/:makeid
-// @desc      Get vehicle models
+// @desc      Get vehicle models of vehicle make
 // @access    Public
 router.get("/models/:makeid", async (req, res) => {
   const makeId = req.params.makeid;

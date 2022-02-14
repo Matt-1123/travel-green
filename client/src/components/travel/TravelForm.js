@@ -12,16 +12,58 @@ const TravelForm = () => {
   let navigate = useNavigate();
 
   const [travel, setTravel] = useState({
-    title: "",
-    description: "",
-    date: "",
-    usedTravelType: "walking",
     usedOrigin: "",
     usedDestination: "",
     avoidedTravelType: "",
     avoidedOrigin: "",
     avoidedDestination: "",
   });
+
+  // Action Title
+  const [title, setTitle] = useState(() => {
+    // get stored value
+    const savedTitle = localStorage.getItem("title");
+    const initialValue = savedTitle;
+    return initialValue || "";
+  });
+  useEffect(() => {
+    // store title in local storage
+    localStorage.setItem("title", title);
+  }, [title]);
+
+  // Action Description
+  const [description, setDescription] = useState(() => {
+    // get stored value
+    const savedDescription = localStorage.getItem("description");
+    return savedDescription || "";
+  });
+  useEffect(() => {
+    // store title in local storage
+    localStorage.setItem("description", description);
+  }, [description]);
+
+  // Action Date
+  const [date, setDate] = useState(() => {
+    // get stored value
+    const savedDate = localStorage.getItem("date");
+    const initialValue = savedDate;
+    return initialValue || "";
+  });
+  useEffect(() => {
+    // store title in local storage
+    localStorage.setItem("date", date);
+  }, [date]);
+
+  // Action Used Travel Type
+  const [usedTravelType, setUsedTravelType] = useState(() => {
+    // get stored value
+    const savedValue = localStorage.getItem("usedTravelType");
+    return savedValue || "walking";
+  });
+  useEffect(() => {
+    // store title in local storage
+    localStorage.setItem("usedTravelType", usedTravelType);
+  }, [usedTravelType]);
 
   const [vehicleMakes, setVehicleMakes] = useState([]);
   const [selectedMake, setSelectedMake] = useState({});
@@ -101,6 +143,20 @@ const TravelForm = () => {
 
   const onChange = (e) =>
     setTravel({ ...travel, [e.target.name]: e.target.value });
+
+  // Handle inputs that must be saved in local storage
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
+  const handleUsedTravelTypeChange = (e) => {
+    setUsedTravelType(e.target.value);
+  };
 
   // Places Autocomplete: Used Origin
   const handleUsedOriginSelect = async (value) =>
@@ -184,8 +240,8 @@ const TravelForm = () => {
           type="text"
           name="title"
           placeholder="Title"
-          value={travel.title}
-          onChange={onChange}
+          value={title}
+          onChange={handleTitleChange}
           required
         />
       </div>
@@ -196,8 +252,8 @@ const TravelForm = () => {
           type="text"
           name="description"
           placeholder="(Optional) Describe your green travel"
-          value={travel.description}
-          onChange={onChange}
+          value={description}
+          onChange={handleDescriptionChange}
         />
       </div>
       <div className="form-group">
@@ -206,8 +262,8 @@ const TravelForm = () => {
           id="date"
           type="date"
           name="date"
-          value={travel.date}
-          onChange={onChange}
+          value={date}
+          onChange={handleDateChange}
           required
         />
       </div>
@@ -217,7 +273,11 @@ const TravelForm = () => {
         <h2 className="text-left">Travel Used</h2>
         <div className="form-group">
           <label>Travel type*</label>
-          <select name="usedTravelType" onChange={onChange} required>
+          <select
+            name="usedTravelType"
+            onChange={handleUsedTravelTypeChange}
+            required
+          >
             <option value="walking">Walking</option>
             <option value="bicycling">Bicycling</option>
             <option value="transit" disabled>

@@ -8,7 +8,7 @@ const Home = () => {
 
   return (
     <div className="grid-1-3">
-      <div>
+      <div className="card bg-dark">
         <h2 className="text-left">Actions</h2>
         <p>Choose an action type</p>
         <ul className="list">
