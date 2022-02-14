@@ -32,15 +32,16 @@ const Navbar = ({ title }) => {
             />
           </button>
           <div
-            className="card bg-dark"
+            className="card"
             style={{
               position: "absolute",
               top: "0",
               right: "0",
-              zIndex: "999",
-              display: open ? "block" : "none",
-              opacity: "0.9",
+              backgroundColor: "#111",
+              visibility: open ? "visible" : "hidden",
+              opacity: open ? "0.9" : "0",
               transform: "translate(-12px, 12px)",
+              transition: "opacity 150ms ease, visibility 150ms ease",
             }}
           >
             <h2 className="text-left">Actions</h2>

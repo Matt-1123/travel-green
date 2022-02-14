@@ -33,7 +33,7 @@ const TravelFeedItem = ({ action }) => {
   };
 
   return (
-    <div className="card bg-dark" style={{ position: "relative" }}>
+    <div className="card bg-dark">
       <div
         style={{
           display: options ? "block" : "none",
