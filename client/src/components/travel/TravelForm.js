@@ -66,6 +66,11 @@ const TravelForm = () => {
   useEffect(() => {
     // On change, update local storage
     localStorage.setItem("avoidedTravelType", avoidedTravelType);
+
+    // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
+    if (vehicleMakes.length === 0 && avoidedTravelType === "vehicle") {
+      getVehicleMakes();
+    }
   }, [avoidedTravelType]);
 
   // Used Origin
@@ -118,28 +123,26 @@ const TravelForm = () => {
   const [vehicleModels, setVehicleModels] = useState([]);
   const [selectedModel, setSelectedModel] = useState([]);
 
-  // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
-  useEffect(() => {
-    const getVehicleMakes = async () => {
-      try {
-        const res = await axios.get("/api/carbon-interface/makes");
-        let arr = [];
-        res.data.forEach((make) => {
-          arr.push({
-            name: make.data.attributes.name,
-            id: make.data.id,
-          });
+  // Get vehicle makes from Carbon Interface API
+  const getVehicleMakes = async () => {
+    try {
+      const res = await axios.get("/api/carbon-interface/makes");
+      let arr = [];
+      res.data.forEach((make) => {
+        arr.push({
+          name: make.data.attributes.name,
+          id: make.data.id,
         });
-        setVehicleMakes(arr);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    if (vehicleMakes.length === 0 && avoidedTravelType === "vehicle") {
-      getVehicleMakes();
+      });
+      // Alphabetize by make name
+      arr.sort((a, b) => {
+        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+      });
+      setVehicleMakes(arr);
+    } catch (err) {
+      console.error(err);
     }
-  }, [avoidedTravelType]);
+  };
 
   useEffect(() => {
     // create array of options to add to vehicle makes dropdown
@@ -167,20 +170,33 @@ const TravelForm = () => {
             },
           }
         );
-        console.log(res.data);
 
         const modelsArr = [];
         res.data.forEach((model) => {
           modelsArr.push({
             name: model.data.attributes.name,
             year: model.data.attributes.year,
+            displayName: `${model.data.attributes.name} (${model.data.attributes.year})`,
             id: model.data.id,
           });
         });
 
-        setVehicleModels(modelsArr);
+        // Alphabetize by model name
+        modelsArr.sort((a, b) => {
+          return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+        });
+
+        // Filter out name/year) repeats. Keep only the model objects where the displayName's value first occurrence of a duplicate using the findIndex method on the models array.
+        const filteredArr = modelsArr.filter((model, index) => {
+          const displayNameIndex = modelsArr.findIndex((obj) => {
+            return obj.displayName === model.displayName;
+          });
+
+          return index === displayNameIndex;
+        });
+
+        setVehicleModels(filteredArr);
       } catch (err) {
-        console.log(`/api/carbon-interface/models/${selectedMake.id}`);
         console.error(err);
       }
     };
@@ -457,9 +473,7 @@ const TravelForm = () => {
             <label htmlFor="vehicleModel">Vehicle Model*</label>
             <ComboBox
               className="text-primary"
-              options={vehicleModels.map(
-                (model) => `${model.name} ${model.year} (${model.id})`
-              )}
+              options={vehicleModels.map((model) => `${model.displayName}`)}
               enableAutocomplete
               onChange={(option) => handleSelectedModel(option)}
               onSelect={(option) => handleSelectedModel(option)}
