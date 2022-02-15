@@ -47,14 +47,14 @@ const TravelSummary = (props) => {
           <h3 className="px-1">Travel Used</h3>
           <div className="my" style={styles.map}></div>
           {/* <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}> */}
-          <GoogleMap
+          {/* <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
             zoom={10}
-          >
-            {/* Child components, such as markers, info windows, etc. */}
-            <>
-              {/* <DirectionsService
+          > */}
+          {/* Child components, such as markers, info windows, etc. */}
+          {/* <>
+              <DirectionsService
                 // required
                 options={{
                   destination: this.state.destination,
@@ -77,9 +77,9 @@ const TravelSummary = (props) => {
                     directionsService
                   );
                 }}
-              /> */}
-            </>
-          </GoogleMap>
+              />
+            </> */}
+          {/* </GoogleMap> */}
           {/* </LoadScript> */}
           <div className="grid-2" style={{ gridGap: 0 }}>
             <div style={styles.mapData}>
