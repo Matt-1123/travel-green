@@ -28,32 +28,33 @@ const TravelFeedItem = ({ action }) => {
   } = action;
 
   const handleOptions = () => {
-    console.log("options clicked");
     setOptions(!options);
   };
 
   return (
     <div className="card bg-dark">
       <div
+        className="grid mb"
         style={{
-          display: options ? "block" : "none",
-          position: "absolute",
-          top: "1rem",
-          right: "3rem",
+          gridTemplateColumns: options ? "42px 1fr auto auto" : "42px 1fr auto",
         }}
       >
-        <button style={{ marginRight: "10px" }}>
-          <FontAwesomeIcon icon={faEdit} style={{ color: "#999" }} />
-        </button>
-        <Link to="/" style={{ marginRight: "10px" }}>
-          <FontAwesomeIcon icon={faTrash} style={{ color: "#dc3545" }} />
-        </Link>
-      </div>
-      <div className="grid mb" style={styles.topWrapper}>
         <img src="" alt="" style={styles.avatar} />
         <div style={styles.meta}>
           <p className="font-sm">{user.name}</p>
           <p className="font-sm">{date}</p>
+        </div>
+        <div
+          style={{
+            display: options ? "inline-block" : "none",
+          }}
+        >
+          <button style={{ marginRight: "10px" }}>
+            <FontAwesomeIcon icon={faEdit} style={{ color: "#999" }} />
+          </button>
+          <Link to="/" style={{ marginRight: "10px" }}>
+            <FontAwesomeIcon icon={faTrash} style={{ color: "#dc3545" }} />
+          </Link>
         </div>
         <button style={{ height: "1rem" }} onClick={handleOptions}>
           <FontAwesomeIcon
@@ -95,9 +96,6 @@ TravelFeedItem.propTypes = {
 };
 
 const styles = {
-  topWrapper: {
-    gridTemplateColumns: "42px 1fr auto",
-  },
   avatar: {
     height: "42px",
     width: "42px",
