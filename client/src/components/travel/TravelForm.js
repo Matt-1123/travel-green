@@ -11,59 +11,106 @@ import { useNavigate } from "react-router-dom";
 const TravelForm = () => {
   let navigate = useNavigate();
 
-  const [travel, setTravel] = useState({
-    usedOrigin: "",
-    usedDestination: "",
-    avoidedTravelType: "",
-    avoidedOrigin: "",
-    avoidedDestination: "",
-  });
-
   // Action Title
   const [title, setTitle] = useState(() => {
-    // get stored value
+    // Get stored value from local storage and if present set it as the initial state.
     const savedTitle = localStorage.getItem("title");
     const initialValue = savedTitle;
     return initialValue || "";
   });
   useEffect(() => {
-    // store title in local storage
+    // On change, update local storage
     localStorage.setItem("title", title);
   }, [title]);
 
   // Action Description
   const [description, setDescription] = useState(() => {
-    // get stored value
+    // Get stored value from local storage and if present set it as the initial state.
     const savedDescription = localStorage.getItem("description");
     return savedDescription || "";
   });
   useEffect(() => {
-    // store title in local storage
+    // On change, update local storage
     localStorage.setItem("description", description);
   }, [description]);
 
   // Action Date
   const [date, setDate] = useState(() => {
-    // get stored value
+    // Get stored value from local storage and if present set it as the initial state.
     const savedDate = localStorage.getItem("date");
     const initialValue = savedDate;
     return initialValue || "";
   });
   useEffect(() => {
-    // store title in local storage
+    // On change, update local storage
     localStorage.setItem("date", date);
   }, [date]);
 
-  // Action Used Travel Type
+  // Used Travel Type
   const [usedTravelType, setUsedTravelType] = useState(() => {
-    // get stored value
+    // Get stored value from local storage and if present set it as the initial state.
     const savedValue = localStorage.getItem("usedTravelType");
     return savedValue || "walking";
   });
   useEffect(() => {
-    // store title in local storage
+    // On change, update local storage
     localStorage.setItem("usedTravelType", usedTravelType);
   }, [usedTravelType]);
+
+  // Avoided Travel Type
+  const [avoidedTravelType, setAvoidedTravelType] = useState(() => {
+    // Get stored value from local storage and if present set it as the initial state.
+    const savedValue = localStorage.getItem("avoidedTravelType");
+    return savedValue || "walking";
+  });
+  useEffect(() => {
+    // On change, update local storage
+    localStorage.setItem("avoidedTravelType", avoidedTravelType);
+  }, [avoidedTravelType]);
+
+  // Used Origin
+  const [usedOrigin, setUsedOrigin] = useState(() => {
+    // Get stored value from local storage and if present set it as the initial state.
+    const savedValue = localStorage.getItem("usedOrigin");
+    return savedValue || "";
+  });
+  useEffect(() => {
+    // On change, update local storage
+    localStorage.setItem("usedOrigin", usedOrigin);
+  }, [usedOrigin]);
+
+  // Used Destination
+  const [usedDestination, setUsedDestination] = useState(() => {
+    // Get stored value from local storage and if present set it as the initial state.
+    const savedValue = localStorage.getItem("usedDestination");
+    return savedValue || "";
+  });
+  useEffect(() => {
+    // On change, update local storage
+    localStorage.setItem("usedDestination", usedDestination);
+  }, [usedDestination]);
+
+  // Avoided Origin
+  const [avoidedOrigin, setAvoidedOrigin] = useState(() => {
+    // Get stored value from local storage and if present set it as the initial state.
+    const savedValue = localStorage.getItem("avoidedOrigin");
+    return savedValue || "";
+  });
+  useEffect(() => {
+    // On change, update local storage
+    localStorage.setItem("avoidedOrigin", avoidedOrigin);
+  }, [avoidedOrigin]);
+
+  // Avoided Destination
+  const [avoidedDestination, setAvoidedDestination] = useState(() => {
+    // Get stored value from local storage and if present set it as the initial state.
+    const savedValue = localStorage.getItem("avoidedDestination");
+    return savedValue || "";
+  });
+  useEffect(() => {
+    // On change, update local storage
+    localStorage.setItem("avoidedDestination", avoidedDestination);
+  }, [avoidedDestination]);
 
   const [vehicleMakes, setVehicleMakes] = useState([]);
   const [selectedMake, setSelectedMake] = useState({});
@@ -89,10 +136,10 @@ const TravelForm = () => {
       }
     };
 
-    if (vehicleMakes.length === 0 && travel.avoidedTravelType === "vehicle") {
+    if (vehicleMakes.length === 0 && avoidedTravelType === "vehicle") {
       getVehicleMakes();
     }
-  }, [travel]);
+  }, [avoidedTravelType]);
 
   useEffect(() => {
     // create array of options to add to vehicle makes dropdown
@@ -141,9 +188,6 @@ const TravelForm = () => {
     getVehicleModels();
   }, [selectedMake]);
 
-  const onChange = (e) =>
-    setTravel({ ...travel, [e.target.name]: e.target.value });
-
   // Handle inputs that must be saved in local storage
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -157,48 +201,40 @@ const TravelForm = () => {
   const handleUsedTravelTypeChange = (e) => {
     setUsedTravelType(e.target.value);
   };
+  const handleAvoidedTravelTypeChange = (e) => {
+    setAvoidedTravelType(e.target.value);
+  };
 
   // Places Autocomplete: Used Origin
-  const handleUsedOriginSelect = async (value) =>
-    setTravel({ ...travel, usedOrigin: value });
-  const handleUsedOriginChange = (value) =>
-    setTravel({ ...travel, usedOrigin: value });
+  const handleUsedOriginSelect = async (value) => setUsedOrigin(value);
+  const handleUsedOriginChange = (value) => setUsedOrigin(value);
 
   // Places Autocomplete: Used Destination
   const handleUsedDestinationSelect = async (value) =>
-    setTravel({ ...travel, usedDestination: value });
-  const handleUsedDestinationChange = (value) =>
-    setTravel({ ...travel, usedDestination: value });
+    setUsedDestination(value);
+  const handleUsedDestinationChange = (value) => setUsedDestination(value);
 
   // Places Autocomplete: Avoided Origin
-  const handleAvoidedOriginSelect = async (value) =>
-    setTravel({ ...travel, avoidedOrigin: value });
-  const handleAvoidedOriginChange = (value) =>
-    setTravel({ ...travel, avoidedOrigin: value });
+  const handleAvoidedOriginSelect = async (value) => setAvoidedOrigin(value);
+  const handleAvoidedOriginChange = (value) => setAvoidedOrigin(value);
 
   // Places Autocomplete: Avoided Destination
   const handleAvoidedDestinationSelect = async (value) =>
-    setTravel({ ...travel, avoidedDestination: value });
+    setAvoidedDestination(value);
   const handleAvoidedDestinationChange = (value) =>
-    setTravel({ ...travel, avoidedDestination: value });
+    setAvoidedDestination(value);
 
   // Auto fill avoided origin when checked
   const sameOrigin = () => {
     if (document.getElementById("same-origin").checked) {
-      setTravel({
-        ...travel,
-        avoidedOrigin: travel.usedOrigin,
-      });
+      setAvoidedOrigin(usedOrigin);
     }
   };
 
   // Auto fill avoided destination when checked
   const sameDestination = () => {
     if (document.getElementById("same-destination").checked) {
-      setTravel({
-        ...travel,
-        avoidedDestination: travel.usedDestination,
-      });
+      setAvoidedDestination(usedDestination);
     }
   };
 
@@ -226,7 +262,7 @@ const TravelForm = () => {
     e.preventDefault();
 
     navigate("/add-travel/summary", {
-      state: { title: travel.title, date: travel.date },
+      state: { title, date },
     });
   };
 
@@ -288,7 +324,7 @@ const TravelForm = () => {
         <div className="form-group">
           <label htmlFor="usedOrigin">Origin*</label>
           <PlacesAutocomplete
-            value={travel.usedOrigin}
+            value={usedOrigin}
             onChange={handleUsedOriginChange}
             onSelect={handleUsedOriginSelect}
           >
@@ -328,7 +364,7 @@ const TravelForm = () => {
         <div className="form-group">
           <label htmlFor="usedDestination">Destination*</label>
           <PlacesAutocomplete
-            value={travel.usedDestination}
+            value={usedDestination}
             onChange={handleUsedDestinationChange}
             onSelect={handleUsedDestinationSelect}
           >
@@ -369,7 +405,11 @@ const TravelForm = () => {
         <h2 className="text-left">Travel Avoided</h2>
         <div className="form-group">
           <label htmlFor="avoidedTravelType">Travel type*</label>
-          <select name="avoidedTravelType" onChange={onChange} required>
+          <select
+            name="avoidedTravelType"
+            onChange={handleAvoidedTravelTypeChange}
+            required
+          >
             <option value="">Select a travel type</option>
             <option value="vehicle">Vehicle</option>
             <option value="transit" disabled>
@@ -383,8 +423,7 @@ const TravelForm = () => {
           <div
             style={{
               margin: "0 auto",
-              display:
-                travel.avoidedTravelType === "vehicle" ? "block" : "none",
+              display: avoidedTravelType === "vehicle" ? "block" : "none",
             }}
             className="form-group"
           >
@@ -411,8 +450,7 @@ const TravelForm = () => {
           <div
             style={{
               margin: "0 auto",
-              display:
-                travel.avoidedTravelType === "vehicle" ? "block" : "none",
+              display: avoidedTravelType === "vehicle" ? "block" : "none",
             }}
             className="form-group"
           >
@@ -433,7 +471,7 @@ const TravelForm = () => {
         <div className="form-group">
           <label htmlFor="avoidedOrigin">Origin*</label>
           <PlacesAutocomplete
-            value={travel.avoidedOrigin}
+            value={avoidedOrigin}
             onChange={handleAvoidedOriginChange}
             onSelect={handleAvoidedOriginSelect}
           >
@@ -482,7 +520,7 @@ const TravelForm = () => {
         <div className="form-group">
           <label htmlFor="avoidedDestination">Destination*</label>
           <PlacesAutocomplete
-            value={travel.avoidedDestination}
+            value={avoidedDestination}
             onChange={handleAvoidedDestinationChange}
             onSelect={handleAvoidedDestinationSelect}
           >
