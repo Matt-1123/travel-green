@@ -308,10 +308,14 @@ const TravelForm = () => {
                     const style = {
                       backgroundColor: suggestion.active ? "#003699" : "#fff",
                       color: suggestion.active ? "#fff" : "#000",
+                      cursor: "pointer",
                     };
 
                     return (
-                      <div {...getSuggestionItemProps(suggestion, { style })}>
+                      <div
+                        {...getSuggestionItemProps(suggestion, { style })}
+                        key={suggestion.placeId}
+                      >
                         {suggestion.description}
                       </div>
                     );
@@ -344,6 +348,7 @@ const TravelForm = () => {
                     const style = {
                       backgroundColor: suggestion.active ? "#003699" : "#fff",
                       color: suggestion.active ? "#fff" : "#000",
+                      cursor: "pointer",
                     };
 
                     return (
