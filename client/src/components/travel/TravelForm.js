@@ -121,7 +121,7 @@ const TravelForm = () => {
   const [selectedMake, setSelectedMake] = useState({});
 
   const [vehicleModels, setVehicleModels] = useState([]);
-  const [selectedModel, setSelectedModel] = useState([]);
+  const [selectedModel, setSelectedModel] = useState({});
 
   // Get vehicle makes from Carbon Interface API
   const getVehicleMakes = async () => {
@@ -201,7 +201,9 @@ const TravelForm = () => {
       }
     };
 
-    getVehicleModels();
+    if (selectedMake !== {}) {
+      getVehicleModels();
+    }
   }, [selectedMake]);
 
   // Handle inputs that must be saved in local storage
@@ -256,17 +258,21 @@ const TravelForm = () => {
 
   // On vehicle make change, set selectedMake to make object from Carbon Interface.
   // Only call setSelectedMake if there is a vehicle make match. Otherwise selectedMake will be undefined and cause an error.
-  const handleSelectedMake = (makeName) => {
-    const selectedMake = vehicleMakes.find((make) => make.name === makeName);
+  const handleSelectedMake = (option) => {
+    // Find a match between selected option and list of vehicle makes in state
+    const selectedMake = vehicleMakes.find((make) => make.name === option);
 
     if (selectedMake) {
       setSelectedMake(selectedMake);
+    } else {
+      setSelectedMake({});
     }
   };
 
   const handleSelectedModel = (option) => {
+    // Find a match between selected option and list of models in state
     const selectedModel = vehicleModels.find(
-      (model) => `${model.name} ${model.year} (${model.id})` === option
+      (model) => `${model.name} (${model.year})` === option
     );
 
     if (selectedModel) {
@@ -276,6 +282,13 @@ const TravelForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    // Validate vehicle make/model selections
+    const isEmptyMake = Object.keys(selectedMake).length === 0;
+    const isEmptyModel = Object.keys(selectedModel).length === 0;
+    if (avoidedTravelType === "vehicle" && (isEmptyMake || isEmptyModel)) {
+      return window.alert("Please select a vehicle make and/or model.");
+    }
 
     navigate("/add-travel/summary", {
       state: { title, date },
@@ -444,19 +457,10 @@ const TravelForm = () => {
             className="form-group"
           >
             <label htmlFor="vehicleMake">Vehicle Make*</label>
-            {/* <select name="vehicleMake">
-              <option value="">Select a vehicle make</option>
-              {vehicleMakes.map((make) => (
-                <option key={make.id} value={make.id}>
-                  {make.name}
-                </option>
-              ))}
-            </select> */}
             <ComboBox
               className="text-primary"
               options={vehicleMakes.map((make) => make.name)}
               enableAutocomplete
-              onChange={(option) => handleSelectedMake(option)}
               onSelect={(option) => handleSelectedMake(option)}
               required
             />
@@ -470,12 +474,18 @@ const TravelForm = () => {
             }}
             className="form-group"
           >
-            <label htmlFor="vehicleModel">Vehicle Model*</label>
+            <label
+              htmlFor="vehicleModel"
+              style={{
+                color: Object.keys(selectedMake).length === 0 ? "#666" : "#fff",
+              }}
+            >
+              Vehicle Model*
+            </label>
             <ComboBox
               className="text-primary"
               options={vehicleModels.map((model) => `${model.displayName}`)}
               enableAutocomplete
-              onChange={(option) => handleSelectedModel(option)}
               onSelect={(option) => handleSelectedModel(option)}
               required
             />
