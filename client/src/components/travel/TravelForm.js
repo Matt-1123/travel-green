@@ -4,6 +4,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
+import Select from "react-select";
 import ComboBox from "react-responsive-combo-box";
 import "react-responsive-combo-box/dist/index.css";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,14 @@ import { useNavigate } from "react-router-dom";
 const TravelForm = () => {
   let navigate = useNavigate();
 
-  // Action Title
+  const usedTravelTypeOptions = [
+    { value: "walking", label: "Walking" },
+    { value: "bicycling", label: "Bicycling" },
+  ];
+
+  const avoidedTravelTypeOptions = [{ value: "driving", label: "Driving" }];
+
+  // Title
   const [title, setTitle] = useState(() => {
     // Get stored value from local storage and if present set it as the initial state.
     const savedTitle = localStorage.getItem("title");
@@ -23,7 +31,7 @@ const TravelForm = () => {
     localStorage.setItem("title", title);
   }, [title]);
 
-  // Action Description
+  // Description
   const [description, setDescription] = useState(() => {
     // Get stored value from local storage and if present set it as the initial state.
     const savedDescription = localStorage.getItem("description");
@@ -34,7 +42,7 @@ const TravelForm = () => {
     localStorage.setItem("description", description);
   }, [description]);
 
-  // Action Date
+  // Date
   const [date, setDate] = useState(() => {
     // Get stored value from local storage and if present set it as the initial state.
     const savedDate = localStorage.getItem("date");
@@ -50,7 +58,7 @@ const TravelForm = () => {
   const [usedTravelType, setUsedTravelType] = useState(() => {
     // Get stored value from local storage and if present set it as the initial state.
     const savedValue = localStorage.getItem("usedTravelType");
-    return savedValue || "walking";
+    return savedValue || "";
   });
   useEffect(() => {
     // On change, update local storage
@@ -61,7 +69,7 @@ const TravelForm = () => {
   const [avoidedTravelType, setAvoidedTravelType] = useState(() => {
     // Get stored value from local storage and if present set it as the initial state.
     const savedValue = localStorage.getItem("avoidedTravelType");
-    return savedValue || "walking";
+    return savedValue || "";
   });
   useEffect(() => {
     // On change, update local storage
@@ -216,12 +224,6 @@ const TravelForm = () => {
   const handleDateChange = (e) => {
     setDate(e.target.value);
   };
-  const handleUsedTravelTypeChange = (e) => {
-    setUsedTravelType(e.target.value);
-  };
-  const handleAvoidedTravelTypeChange = (e) => {
-    setAvoidedTravelType(e.target.value);
-  };
 
   // Places Autocomplete: Used Origin
   const handleUsedOriginSelect = async (value) => setUsedOrigin(value);
@@ -283,6 +285,14 @@ const TravelForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    // Validate used and avoided travel type selections
+    const used = localStorage.getItem("usedTravelType");
+    const avoided = localStorage.getItem("avoidedTravelType");
+    console.log(`used: ${used}, avoided: ${avoided}`);
+    if (used === undefined || avoided === undefined) {
+      return window.alert("Please select a Used and/or Avoided Travel Type.");
+    }
+
     // Validate vehicle make/model selections
     const isEmptyMake = Object.keys(selectedMake).length === 0;
     const isEmptyModel = Object.keys(selectedModel).length === 0;
@@ -338,17 +348,15 @@ const TravelForm = () => {
         <h2 className="text-left">Travel Used</h2>
         <div className="form-group">
           <label>Travel type*</label>
-          <select
-            name="usedTravelType"
-            onChange={handleUsedTravelTypeChange}
-            required
-          >
-            <option value="walking">Walking</option>
-            <option value="bicycling">Bicycling</option>
-            <option value="transit" disabled>
-              Transit (coming soon)
-            </option>
-          </select>
+          <Select
+            styles={customStyles}
+            defaultInputValue={usedTravelType}
+            onChange={(selectedOption) => {
+              setUsedTravelType(selectedOption.value);
+            }}
+            options={usedTravelTypeOptions}
+            placeholder="Choose a Travel Type"
+          />
         </div>
         <div className="form-group">
           <label htmlFor="usedOrigin">Origin*</label>
@@ -434,17 +442,15 @@ const TravelForm = () => {
         <h2 className="text-left">Travel Avoided</h2>
         <div className="form-group">
           <label htmlFor="avoidedTravelType">Travel type*</label>
-          <select
-            name="avoidedTravelType"
-            onChange={handleAvoidedTravelTypeChange}
-            required
-          >
-            <option value="">Select a travel type</option>
-            <option value="vehicle">Vehicle</option>
-            <option value="transit" disabled>
-              Transit (coming soon)
-            </option>
-          </select>
+          <Select
+            styles={customStyles}
+            defaultInputValue={avoidedTravelType}
+            onChange={(selectedOption) => {
+              setAvoidedTravelType(selectedOption.value);
+            }}
+            options={avoidedTravelTypeOptions}
+            placeholder="Choose a Travel Type"
+          />
         </div>
 
         <div className="grid-2">
@@ -600,6 +606,13 @@ const TravelForm = () => {
       <p className="font-sm">* required</p>
     </form>
   );
+};
+
+const customStyles = {
+  option: (provided, state) => ({
+    ...provided,
+    color: "#000",
+  }),
 };
 
 export default TravelForm;
