@@ -75,8 +75,8 @@ const TravelForm = () => {
     // On change, update local storage
     localStorage.setItem("avoidedTravelType", avoidedTravelType);
 
-    // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'vehicle' is manually selected.
-    if (vehicleMakes.length === 0 && avoidedTravelType === "vehicle") {
+    // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'driving' is manually selected.
+    if (vehicleMakes.length === 0 && avoidedTravelType === "driving") {
       getVehicleMakes();
     }
   }, [avoidedTravelType]);
@@ -125,11 +125,29 @@ const TravelForm = () => {
     localStorage.setItem("avoidedDestination", avoidedDestination);
   }, [avoidedDestination]);
 
+  // Vehicle Makes and Selected Make
   const [vehicleMakes, setVehicleMakes] = useState([]);
-  const [selectedMake, setSelectedMake] = useState({});
+  const [selectedMake, setSelectedMake] = useState(() => {
+    // Get stored value from local storage and if present set it as the initial state.
+    const savedValue = localStorage.getItem("selectedMake");
+    return savedValue || {};
+  });
+  useEffect(() => {
+    // On change, update local storage
+    localStorage.setItem("selectedMake", selectedMake);
+  }, [selectedMake]);
 
+  // Vehicle Models and Selected Model
   const [vehicleModels, setVehicleModels] = useState([]);
-  const [selectedModel, setSelectedModel] = useState({});
+  const [selectedModel, setSelectedModel] = useState(() => {
+    // Get stored value from local storage and if present set it as the initial state.
+    const savedValue = localStorage.getItem("selectedModel");
+    return savedValue || {};
+  });
+  useEffect(() => {
+    // On change, update local storage
+    localStorage.setItem("selectedModel", selectedModel);
+  }, [selectedModel]);
 
   // Get vehicle makes from Carbon Interface API
   const getVehicleMakes = async () => {
@@ -296,7 +314,7 @@ const TravelForm = () => {
     // Validate vehicle make/model selections
     const isEmptyMake = Object.keys(selectedMake).length === 0;
     const isEmptyModel = Object.keys(selectedModel).length === 0;
-    if (avoidedTravelType === "vehicle" && (isEmptyMake || isEmptyModel)) {
+    if (avoidedTravelType === "driving" && (isEmptyMake || isEmptyModel)) {
       return window.alert("Please select a vehicle make and/or model.");
     }
 
@@ -458,7 +476,7 @@ const TravelForm = () => {
           <div
             style={{
               margin: "0 auto",
-              display: avoidedTravelType === "vehicle" ? "block" : "none",
+              display: avoidedTravelType === "driving" ? "block" : "none",
             }}
             className="form-group"
           >
@@ -476,7 +494,7 @@ const TravelForm = () => {
           <div
             style={{
               margin: "0 auto",
-              display: avoidedTravelType === "vehicle" ? "block" : "none",
+              display: avoidedTravelType === "driving" ? "block" : "none",
             }}
             className="form-group"
           >
