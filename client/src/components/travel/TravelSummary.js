@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
   GoogleMap,
@@ -15,30 +15,36 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-const containerStyle = {
-  width: "400px",
-  height: "400px",
-};
-
 const center = {
   lat: -3.745,
   lng: -38.523,
 };
 
+const title = localStorage.getItem("title");
+const description = localStorage.getItem("description");
+const date = localStorage.getItem("date");
+const usedTravelType = localStorage.getItem("usedTravelType");
+const usedOrigin = localStorage.getItem("usedOrigin");
+const usedDestination = localStorage.getItem("usedDestination");
+const avoidedTravelType = localStorage.getItem("avoidedTravelType");
+const selectedMake = JSON.parse(localStorage.getItem("selectedMake"));
+const selectedModel = JSON.parse(localStorage.getItem("selectedModel"));
+const avoidedOrigin = localStorage.getItem("avoidedOrigin");
+const avoidedDestination = localStorage.getItem("avoidedDestination");
+
 const TravelSummary = (props) => {
   const { state } = useLocation();
-  console.log(state);
 
-  const [formData, setFormData] = useState({
-    title: "Morning Walk",
-    description: "Waked instead of taking the car this morning to work.",
-    date: "January 1, 2022 at 8:00am",
-    usedTravelType: "walking",
-  });
+  console.log(`${selectedMake.name} ${selectedModel.displayName}`);
 
   return (
     <Fragment>
-      <h1>{state.title}</h1>
+      <h1>Travel Action Summary</h1>
+      <div className="container-narrow bg-dark">
+        <p>Title: {title}</p>
+        <p>Description: {description}</p>
+        <p>Date: {date}</p>
+      </div>
       <div className="container-narrow bg-dark">
         CO2e prevented: <span className="font-lg text-primary">15 kg</span>
       </div>
@@ -95,7 +101,10 @@ const TravelSummary = (props) => {
                 ) : (
                   <FontAwesomeIcon icon={faBicycle} className="icon-primary" />
                 )} */}
-                <FontAwesomeIcon icon={faWalking} className="icon-primary" />
+                <FontAwesomeIcon
+                  icon={usedTravelType === "walking" ? faWalking : faBicycle}
+                  className="icon-primary"
+                />
               </p>
               <p className="font-sm">Travel Type</p>
             </div>
@@ -113,13 +122,18 @@ const TravelSummary = (props) => {
             </div>
             <div style={styles.mapData}>
               <p className="font-lg" style={{ marginBottom: 0 }}>
-                {/* {usedTravelType === "driving" ? (
-                  <FontAwesomeIcon icon={faWalking} className="icon-primary" />
-                ) : null} */}
-                <FontAwesomeIcon icon={faWalking} className="icon-primary" />
+                <FontAwesomeIcon
+                  icon={avoidedTravelType === "driving" ? faCar : null}
+                  className="icon-warning"
+                />
               </p>
               <p className="font-sm">Travel Type</p>
             </div>
+          </div>
+          <div>
+            <p className="p-1">
+              Vehicle: {selectedMake.name} {selectedModel.displayName}
+            </p>
           </div>
         </div>
       </div>
@@ -139,6 +153,11 @@ const styles = {
     borderRadius: "20px",
     padding: "1rem 0",
   },
+};
+
+const containerStyle = {
+  width: "400px",
+  height: "400px",
 };
 
 export default TravelSummary;

@@ -134,7 +134,7 @@ const TravelForm = () => {
   });
   useEffect(() => {
     // On change, update local storage
-    localStorage.setItem("selectedMake", selectedMake);
+    localStorage.setItem("selectedMake", JSON.stringify(selectedMake));
   }, [selectedMake]);
 
   // Vehicle Models and Selected Model
@@ -146,7 +146,7 @@ const TravelForm = () => {
   });
   useEffect(() => {
     // On change, update local storage
-    localStorage.setItem("selectedModel", selectedModel);
+    localStorage.setItem("selectedModel", JSON.stringify(selectedModel));
   }, [selectedModel]);
 
   // Get vehicle makes from Carbon Interface API
@@ -282,6 +282,9 @@ const TravelForm = () => {
     // Find a match between selected option and list of vehicle makes in state
     const selectedMake = vehicleMakes.find((make) => make.name === option);
 
+    // Convert the vehicle make object into a JSON string
+    JSON.stringify(selectedMake);
+
     if (selectedMake) {
       setSelectedMake(selectedMake);
     } else {
@@ -319,7 +322,7 @@ const TravelForm = () => {
     }
 
     navigate("/add-travel/summary", {
-      state: { title, date },
+      state: {},
     });
   };
 

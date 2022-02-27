@@ -336,6 +336,9 @@ img {
 .icon-primary {
   color: var(--primary-color);
 }
+.icon-warning {
+  color: var(--warning-color)
+}
 
 .btn-light,
 .bg-light,
