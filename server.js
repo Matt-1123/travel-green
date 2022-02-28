@@ -18,6 +18,7 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/actions", require("./routes/actions"));
 app.use("/api/carbon-interface", require("./routes/carbon-interface"));
+app.use("/api/google-maps", require("./routes/google-maps"));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {

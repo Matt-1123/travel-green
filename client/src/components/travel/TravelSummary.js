@@ -1,24 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  GoogleMap,
-  LoadScript,
-  DirectionsService,
-} from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faWalking,
-  faBicycle,
-  faCar,
-  faEllipsisH,
-  faEdit,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-
-const center = {
-  lat: -3.745,
-  lng: -38.523,
-};
+import { faWalking, faBicycle, faCar } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const title = localStorage.getItem("title");
 const description = localStorage.getItem("description");
@@ -33,9 +17,53 @@ const avoidedOrigin = localStorage.getItem("avoidedOrigin");
 const avoidedDestination = localStorage.getItem("avoidedDestination");
 
 const TravelSummary = (props) => {
-  const { state } = useLocation();
+  // const { state } = useLocation();
 
-  console.log(`${selectedMake.name} ${selectedModel.displayName}`);
+  // Initialize state for Used & Avoided directions responses
+  const [usedDistance, setUsedDistance] = useState(null);
+  const [avoidedDistance, setAvoidedDistance] = useState(null);
+
+  // Get Distances on Page Load
+  useEffect(() => {
+    const getDistance = async (origin, destination, mode) => {
+      try {
+        const res = await axios.get(
+          `/api/google-maps/distance/${origin}/${destination}/${mode}`
+        );
+
+        // Get distance as a decimal.
+        // Use parseFloat to convert from 'x mi' to x.
+        const distance = parseFloat(res.data.routes[0].legs[0].distance.text);
+
+        return distance;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const usedDistanceSetter = async () => {
+      const data = await getDistance(
+        usedOrigin,
+        usedDestination,
+        usedTravelType
+      );
+
+      setUsedDistance(data);
+    };
+
+    const avoidedDistanceSetter = async () => {
+      const data = await getDistance(
+        avoidedOrigin,
+        avoidedDestination,
+        avoidedTravelType
+      );
+
+      setAvoidedDistance(data);
+    };
+
+    usedDistanceSetter();
+    avoidedDistanceSetter();
+  }, []);
 
   return (
     <Fragment>
@@ -50,57 +78,16 @@ const TravelSummary = (props) => {
       </div>
       <div className="grid-2">
         <div className="card bg-dark" style={styles.mapCard}>
-          <h3 className="px-1">Travel Used</h3>
-          <div className="my" style={styles.map}></div>
-          {/* <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}> */}
-          {/* <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={10}
-          > */}
-          {/* Child components, such as markers, info windows, etc. */}
-          {/* <>
-              <DirectionsService
-                // required
-                options={{
-                  destination: this.state.destination,
-                  origin: this.state.origin,
-                  travelMode: this.state.travelMode,
-                }}
-                // required
-                callback={this.directionsCallback}
-                // optional
-                onLoad={(directionsService) => {
-                  console.log(
-                    "DirectionsService onLoad directionsService: ",
-                    directionsService
-                  );
-                }}
-                // optional
-                onUnmount={(directionsService) => {
-                  console.log(
-                    "DirectionsService onUnmount directionsService: ",
-                    directionsService
-                  );
-                }}
-              />
-            </> */}
-          {/* </GoogleMap> */}
-          {/* </LoadScript> */}
+          <h3 className="px-1 mb-1">Travel Used</h3>
           <div className="grid-2" style={{ gridGap: 0 }}>
             <div style={styles.mapData}>
               <p className="font-lg" style={{ marginBottom: 0 }}>
-                8
+                {usedDistance}
               </p>
               <p className="font-sm">mi</p>
             </div>
             <div style={styles.mapData}>
               <p className="font-lg" style={{ marginBottom: 0 }}>
-                {/* {usedTravelType === "walking" ? (
-                  <FontAwesomeIcon icon={faWalking} className="icon-primary" />
-                ) : (
-                  <FontAwesomeIcon icon={faBicycle} className="icon-primary" />
-                )} */}
                 <FontAwesomeIcon
                   icon={usedTravelType === "walking" ? faWalking : faBicycle}
                   className="icon-primary"
@@ -111,12 +98,11 @@ const TravelSummary = (props) => {
           </div>
         </div>
         <div className="card bg-dark" style={styles.mapCard}>
-          <h3 className="px-1">Travel Avoided</h3>
-          <div className="my" style={styles.map}></div>
+          <h3 className="px-1 mb-1">Travel Avoided</h3>
           <div className="grid-2" style={{ gridGap: 0 }}>
             <div style={styles.mapData}>
               <p className="font-lg" style={{ marginBottom: 0 }}>
-                8
+                {avoidedDistance}
               </p>
               <p className="font-sm">mi</p>
             </div>
@@ -153,11 +139,6 @@ const styles = {
     borderRadius: "20px",
     padding: "1rem 0",
   },
-};
-
-const containerStyle = {
-  width: "400px",
-  height: "400px",
 };
 
 export default TravelSummary;
