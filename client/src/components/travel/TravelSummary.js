@@ -22,6 +22,7 @@ const TravelSummary = (props) => {
   // Initialize state for Used & Avoided directions responses
   const [usedDistance, setUsedDistance] = useState(null);
   const [avoidedDistance, setAvoidedDistance] = useState(null);
+  const [carbonPrevented, setCarbonPrevented] = useState(null);
 
   // Get Distances on Page Load
   useEffect(() => {
@@ -65,6 +66,24 @@ const TravelSummary = (props) => {
     avoidedDistanceSetter();
   }, []);
 
+  // After avoided distance is calculated, calculate CO2 emissions prevented using model id and distance
+  useEffect(() => {
+    const getCarbon = async (distance, modelId) => {
+      try {
+        const res = await axios.get(
+          `/api/carbon-interface/carbon/${distance}/${modelId}`
+        );
+        setCarbonPrevented(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (avoidedDistance) {
+      getCarbon(avoidedDistance, selectedModel.id);
+    }
+  }, [avoidedDistance]);
+
   return (
     <Fragment>
       <h1>Travel Action Summary</h1>
@@ -74,7 +93,8 @@ const TravelSummary = (props) => {
         <p>Date: {date}</p>
       </div>
       <div className="container-narrow bg-dark">
-        CO2e prevented: <span className="font-lg text-primary">15 kg</span>
+        CO2e prevented:{" "}
+        <span className="font-lg text-primary">{carbonPrevented} kg</span>
       </div>
       <div className="grid-2">
         <div className="card bg-dark" style={styles.mapCard}>

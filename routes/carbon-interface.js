@@ -55,4 +55,39 @@ router.get("/models/:makeid", async (req, res) => {
   }
 });
 
+// @route     GET api/carbon-interface/carbon/:distance/:modelId
+// @desc      Get vehicle models of vehicle make
+// @access    Public
+router.get("/carbon/:distance/:modelId", async (req, res) => {
+  const distance = req.params.distance;
+  const modelId = req.params.modelId;
+  console.log(`distance: ${distance}, modelId: ${modelId}`);
+
+  try {
+    const tripData = {
+      type: "vehicle",
+      distance_unit: "mi",
+      distance_value: distance,
+      vehicle_model_id: modelId,
+    };
+
+    const response = await axios.post(
+      "https://www.carboninterface.com/api/v1/estimates",
+      tripData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_CARBON_INTERFACE_BEARER_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = response.data.data.attributes.carbon_kg;
+    if (data) return res.json(data);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send(err);
+  }
+});
+
 module.exports = router;
