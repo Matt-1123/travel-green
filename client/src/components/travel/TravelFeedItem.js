@@ -16,6 +16,7 @@ const TravelFeedItem = ({ action }) => {
   const [options, setOptions] = useState(false);
 
   const {
+    id,
     user,
     title,
     description,
@@ -70,11 +71,17 @@ const TravelFeedItem = ({ action }) => {
         ) : (
           <FontAwesomeIcon icon={faBicycle} className="icon-primary" />
         )}
-        <h3 className="font-md ml-1"> {title}</h3>
+        <h3 className="font-md ml-1">
+          <Link to={`/travel-action/${id}`} className="title">
+            {title}
+          </Link>
+        </h3>
       </div>
       <div style={styles.stats}>
         <div className="text-primary">
-          <p className="font-sm">CO2e Prevented:</p>
+          <p className="font-sm">
+            CO<sub>2</sub>e Prevented:
+          </p>
           <p className="font-lg" style={{ lineHeight: "1" }}>
             {carbonPrevented} kg
           </p>

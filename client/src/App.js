@@ -4,6 +4,7 @@ import Navbar from "./components/layout/navbar/Navbar";
 import Footer from "./components/layout/Footer";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
+import NotFound from "./components/pages/NotFound";
 import AuthState from "./context/auth/AuthState";
 import TravelState from "./context/travel/TravelState";
 import TravelForm from "./components/travel/TravelForm";
@@ -30,6 +31,12 @@ const App = () => {
                   path="/add-travel/summary"
                   element={<TravelSummary />}
                 />
+                <Route
+                  exact
+                  path="/travel-action/:id"
+                  component={TravelAction}
+                />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
             <Footer />
