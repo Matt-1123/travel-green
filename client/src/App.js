@@ -9,6 +9,7 @@ import AuthState from "./context/auth/AuthState";
 import TravelState from "./context/travel/TravelState";
 import TravelForm from "./components/travel/TravelForm";
 import TravelSummary from "./components/travel/TravelSummary";
+import TravelAction from "./components/travel/TravelAction";
 import "./App.css";
 
 const App = () => {
@@ -34,7 +35,7 @@ const App = () => {
                 <Route
                   exact
                   path="/travel-action/:id"
-                  component={TravelAction}
+                  element={<TravelAction />}
                 />
                 <Route path="*" element={<NotFound />} />
               </Routes>
