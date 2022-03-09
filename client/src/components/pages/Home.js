@@ -7,7 +7,7 @@ const Home = () => {
   const authContext = useContext(AuthContext);
 
   return (
-    <div className="grid-1-3">
+    <div className="grid-2-5-2" style={{ alignItems: "start" }}>
       <div className="card bg-dark">
         <h2 className="text-left">Actions</h2>
         <p>Choose an action type</p>
@@ -19,6 +19,17 @@ const Home = () => {
       </div>
       <div>
         <Feed />
+      </div>
+      <div>
+        <div className="container">
+          <h2 className="text-left">Learn More</h2>
+          <hr />
+          <ul className="list">
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

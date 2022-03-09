@@ -103,7 +103,7 @@ img {
 }
 
 .font-sm {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   line-height: 1.2;
 }
 
@@ -290,6 +290,12 @@ img {
 .grid-2-3 {
   display: grid;
   grid-template-columns: 2fr 3fr;
+  grid-gap: 2rem;
+}
+/* Home Layout */
+.grid-2-5-2 {
+  display: grid;
+  grid-template-columns: 2fr 5fr 2fr;
   grid-gap: 2rem;
 }
 
@@ -515,7 +521,8 @@ table th {
   .grid-2,
   .grid-3,
   .grid-4,
-  .grid-1-3 {
+  .grid-1-3,
+  .grid-2-5-2 {
     grid-template-columns: 1fr;
   }
 

@@ -64,7 +64,10 @@ const TravelFeedItem = ({ action }) => {
           />
         </button>
       </div>
-      <div className="flex" style={{ alignItems: "center" }}>
+      <div
+        className="flex"
+        style={{ alignItems: "center", marginBottom: ".25em" }}
+      >
         {/* <img src="" alt="" className="mr-1" style={styles.icon} /> */}
         {usedTravelType === "walking" ? (
           <FontAwesomeIcon icon={faWalking} className="icon-primary" />
@@ -77,20 +80,34 @@ const TravelFeedItem = ({ action }) => {
           </Link>
         </h3>
       </div>
+      {description && (
+        <p className="font-sm" style={{ marginBottom: ".5em" }}>
+          {description}
+        </p>
+      )}
       <div style={styles.stats}>
-        <div className="text-primary">
+        <div className="text-primary mr">
           <p className="font-sm">
             CO<sub>2</sub>e Prevented:
           </p>
-          <p className="font-lg" style={{ lineHeight: "1" }}>
+          <p className="font-lg" style={{ lineHeight: "1", marginBottom: "0" }}>
             {carbonPrevented} kg
           </p>
         </div>
-        <div>
+        <div className="mr">
           <p className="font-sm">Travel Used</p>
           <p className="font-md">
             {`${usedDistance} mi, `}
             {`${usedTravelType[0].toUpperCase()}${usedTravelType.slice(1)}`}
+          </p>
+        </div>
+        <div className="mr">
+          <p className="font-sm">Travel Avoided</p>
+          <p className="font-md">
+            {`${avoidedDistance} mi, `}
+            {`${avoidedTravelType[0].toUpperCase()}${avoidedTravelType.slice(
+              1
+            )}`}
           </p>
         </div>
       </div>
@@ -122,7 +139,7 @@ const styles = {
   stats: {
     display: "inline-flex",
     flexWrap: "wrap",
-    gap: "2rem",
+    gap: "1rem",
   },
 };
 
