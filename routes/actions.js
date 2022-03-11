@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const { check, validationResult } = require("express-validator");
-const Action = require("../models/Action");
+const TravelAction = require("../models/TravelAction");
 
 // @route     GET api/actions
 // @desc      Get all users actions

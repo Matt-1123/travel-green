@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+import PlacesAutocomplete from "react-places-autocomplete";
 import Select from "react-select";
 import ComboBox from "react-responsive-combo-box";
 import "react-responsive-combo-box/dist/index.css";
@@ -17,7 +14,10 @@ const TravelForm = () => {
     { value: "bicycling", label: "Bicycling" },
   ];
 
-  const avoidedTravelTypeOptions = [{ value: "driving", label: "Driving" }];
+  const avoidedTravelTypeOptions = [
+    { value: "", label: "Select a travel type" },
+    { value: "driving", label: "Driving" },
+  ];
 
   // Title
   const [title, setTitle] = useState(() => {
@@ -67,13 +67,32 @@ const TravelForm = () => {
 
   // Avoided Travel Type
   const [avoidedTravelType, setAvoidedTravelType] = useState(() => {
-    // Get stored value from local storage and if present set it as the initial state.
-    const savedValue = localStorage.getItem("avoidedTravelType");
-    return savedValue || "";
+    return "";
   });
   useEffect(() => {
     // On change, update local storage
     localStorage.setItem("avoidedTravelType", avoidedTravelType);
+
+    // Get vehicle makes from Carbon Interface API
+    const getVehicleMakes = async () => {
+      try {
+        const res = await axios.get("/api/carbon-interface/makes");
+        let arr = [];
+        res.data.forEach((make) => {
+          arr.push({
+            name: make.data.attributes.name,
+            id: make.data.id,
+          });
+        });
+        // Alphabetize by make name
+        arr.sort((a, b) => {
+          return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+        });
+        setVehicleMakes(arr);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
     // Store all the vehicle makes in state only when the avoided travel type is 'vehicle' and if vehicleMakes is an empty array. This will limit the API call for vehicle makes to one per session, and only if 'driving' is manually selected.
     if (vehicleMakes.length === 0 && avoidedTravelType === "driving") {
@@ -127,48 +146,11 @@ const TravelForm = () => {
 
   // Vehicle Makes and Selected Make
   const [vehicleMakes, setVehicleMakes] = useState([]);
-  const [selectedMake, setSelectedMake] = useState(() => {
-    // Get stored value from local storage and if present set it as the initial state.
-    const savedValue = localStorage.getItem("selectedMake");
-    return savedValue || {};
-  });
-  useEffect(() => {
-    // On change, update local storage
-    localStorage.setItem("selectedMake", JSON.stringify(selectedMake));
-  }, [selectedMake]);
+  const [selectedMake, setSelectedMake] = useState({});
 
   // Vehicle Models and Selected Model
   const [vehicleModels, setVehicleModels] = useState([]);
-  const [selectedModel, setSelectedModel] = useState(() => {
-    // Get stored value from local storage and if present set it as the initial state.
-    const savedValue = localStorage.getItem("selectedModel");
-    return savedValue || {};
-  });
-  useEffect(() => {
-    // On change, update local storage
-    localStorage.setItem("selectedModel", JSON.stringify(selectedModel));
-  }, [selectedModel]);
-
-  // Get vehicle makes from Carbon Interface API
-  const getVehicleMakes = async () => {
-    try {
-      const res = await axios.get("/api/carbon-interface/makes");
-      let arr = [];
-      res.data.forEach((make) => {
-        arr.push({
-          name: make.data.attributes.name,
-          id: make.data.id,
-        });
-      });
-      // Alphabetize by make name
-      arr.sort((a, b) => {
-        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-      });
-      setVehicleMakes(arr);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const [selectedModel, setSelectedModel] = useState({});
 
   useEffect(() => {
     // create array of options to add to vehicle makes dropdown
@@ -182,8 +164,12 @@ const TravelForm = () => {
     });
   }, [vehicleMakes]);
 
-  // When selectedMake is updated, get models data from GET /carbon-interface route.
-  // Then populate vehicle models dropdown
+  // Purpose: Get vehicle makes from api/carbon-interface/makes and populate vehicle makes dropdown
+  // Triggered by: selectedMake
+  useEffect(() => {}, []);
+
+  // Purpose: Get vehicle models from GET /carbon-interface and populate vehicle models dropdown
+  // Triggered by: selectedMake
   useEffect(() => {
     const getVehicleModels = async () => {
       try {
@@ -227,7 +213,8 @@ const TravelForm = () => {
       }
     };
 
-    if (selectedMake !== {}) {
+    // Prevent call on component mount
+    if (Object.keys(selectedMake).length !== 0) {
       getVehicleModels();
     }
   }, [selectedMake]);
@@ -373,7 +360,7 @@ const TravelForm = () => {
             styles={customStyles}
             defaultInputValue={usedTravelType}
             onChange={(selectedOption) => {
-              setUsedTravelType(selectedOption.value);
+              setUsedTravelType(selectedOption.label);
             }}
             options={usedTravelTypeOptions}
             placeholder="Choose a Travel Type"
