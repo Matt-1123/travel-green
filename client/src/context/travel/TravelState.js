@@ -24,6 +24,18 @@ const TravelState = (props) => {
       {
         user: { name: "Matt Russo" },
         id: 2,
+        carbonPrevented: 124.3,
+        title: "Morning Commute",
+        description: "",
+        date: "January 1, 2022",
+        usedTravelType: "bicycling",
+        usedDistance: 26.2,
+        avoidedTravelType: "driving",
+        avoidedDistance: 29,
+      },
+      {
+        user: { name: "Matt Russo" },
+        id: 3,
         carbonPrevented: 5.5,
         title: "Morning Commute",
         description:
@@ -43,7 +55,7 @@ const TravelState = (props) => {
   const addTravel = (travel) => {
     // Note: MongoDB adds id
     // uuid will temporarily provide the id until backend is setup
-    travel.id = uuid.v4();
+    // travel.id = uuid.v4();
     dispatch({ type: ADD_TRAVEL, payload: travel });
   };
 

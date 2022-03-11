@@ -70,9 +70,6 @@ const TravelForm = () => {
     return "";
   });
   useEffect(() => {
-    // On change, update local storage
-    localStorage.setItem("avoidedTravelType", avoidedTravelType);
-
     // Get vehicle makes from Carbon Interface API
     const getVehicleMakes = async () => {
       try {
@@ -295,9 +292,7 @@ const TravelForm = () => {
 
     // Validate used and avoided travel type selections
     const used = localStorage.getItem("usedTravelType");
-    const avoided = localStorage.getItem("avoidedTravelType");
-    console.log(`used: ${used}, avoided: ${avoided}`);
-    if (used === undefined || avoided === undefined) {
+    if (used === undefined || !avoidedTravelType) {
       return window.alert("Please select a Used and/or Avoided Travel Type.");
     }
 
@@ -309,7 +304,7 @@ const TravelForm = () => {
     }
 
     navigate("/add-travel/summary", {
-      state: {},
+      state: { avoidedTravelType, selectedMake, selectedModel },
     });
   };
 

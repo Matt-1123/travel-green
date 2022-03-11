@@ -1,5 +1,8 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useContext, useState, useEffect } from "react";
+import TravelContext from "../../context/travel/travelContext";
+import Spinner from "../layout/Spinner";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWalking, faBicycle, faCar } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -10,14 +13,23 @@ const date = localStorage.getItem("date");
 const usedTravelType = localStorage.getItem("usedTravelType");
 const usedOrigin = localStorage.getItem("usedOrigin");
 const usedDestination = localStorage.getItem("usedDestination");
-const avoidedTravelType = localStorage.getItem("avoidedTravelType");
-const selectedMake = JSON.parse(localStorage.getItem("selectedMake"));
-const selectedModel = JSON.parse(localStorage.getItem("selectedModel"));
+// const avoidedTravelType = localStorage.getItem("avoidedTravelType");
+// const selectedMake = JSON.parse(localStorage.getItem("selectedMake"));
+// const selectedModel = JSON.parse(localStorage.getItem("selectedModel"));
 const avoidedOrigin = localStorage.getItem("avoidedOrigin");
 const avoidedDestination = localStorage.getItem("avoidedDestination");
 
 const TravelSummary = (props) => {
-  // const { state } = useLocation();
+  // let navigate = useNavigate();
+
+  const travelContext = useContext(TravelContext);
+  const { addTravel } = travelContext;
+
+  const { state } = useLocation();
+  const { avoidedTravelType, selectedMake, selectedModel } = state;
+
+  // Initialize loading state
+  const [loading, setLoading] = useState(false);
 
   // Initialize state for Used & Avoided directions responses
   const [usedDistance, setUsedDistance] = useState(null);
@@ -82,10 +94,37 @@ const TravelSummary = (props) => {
     if (avoidedDistance) {
       getCarbon(avoidedDistance, selectedModel.id);
     }
+
+    setLoading(false);
   }, [avoidedDistance]);
+
+  const handleSave = () => {
+    const travelAction = {
+      user: { name: "Matt Russo" },
+      id: 4,
+      carbonPrevented: carbonPrevented,
+      title: title,
+      description: description,
+      date: date,
+      usedTravelType: usedTravelType,
+      usedDistance: usedDistance,
+      avoidedTravelType: avoidedTravelType,
+      avoidedDistance: avoidedDistance,
+    };
+
+    // TODO: Save to database
+    addTravel(travelAction);
+
+    // TODO: Clear local storage
+
+    // TODO: Prevent user from returning to this page using useHistory hook.
+  };
+
+  if (loading) return <Spinner />;
 
   return (
     <Fragment>
+      {/* <button onClick={navigate(-1)}>Edit</button> */}
       <h1>Travel Action Summary</h1>
       <div className="container-narrow bg-dark">
         <p>Title: {title}</p>
@@ -142,6 +181,13 @@ const TravelSummary = (props) => {
             </p>
           </div>
         </div>
+      </div>
+      <div className="grid-3 my-2">
+        <button className="btn-light">Edit</button>
+        <button className="btn-light">Cancel</button>
+        <button className="btn-primary" onClick={handleSave}>
+          Save
+        </button>
       </div>
     </Fragment>
   );
