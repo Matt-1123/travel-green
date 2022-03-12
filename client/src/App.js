@@ -25,7 +25,7 @@ const App = () => {
               <Navbar />
               <div
                 className="container container-dark"
-                style={{ marginBottom: "3rem", minHeight: "65vh" }}
+                style={{ marginBottom: "3rem", minHeight: "80vh" }}
               >
                 <Routes>
                   <Route exact path="/" element={<Home />} />

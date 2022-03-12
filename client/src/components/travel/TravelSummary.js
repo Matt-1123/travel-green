@@ -185,7 +185,7 @@ const TravelSummary = (props) => {
       <div className="grid-3 my-2">
         <button className="btn-light">Edit</button>
         <button className="btn-light">Cancel</button>
-        <button className="btn-primary" onClick={handleSave}>
+        <button className="btn-primary--dark" onClick={handleSave}>
           Save
         </button>
       </div>

@@ -45,7 +45,7 @@ const Navbar = ({ title }) => {
 
   return (
     <Fragment>
-      <div className="navbar bg-primary">
+      <div className="navbar bg-primary--dark">
         <div className="container" style={{ position: "relative" }}>
           <h1>
             <Link to="/">{title}</Link>
@@ -74,7 +74,7 @@ const Navbar = ({ title }) => {
               right: "0",
               backgroundColor: "#111",
               visibility: openActionMenu ? "visible" : "hidden",
-              opacity: openActionMenu ? "0.9" : "0",
+              opacity: openActionMenu ? "1" : "0",
               transform: "translate(-12px, 12px)",
               transition: "opacity 150ms ease, visibility 150ms ease",
             }}

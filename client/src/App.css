@@ -4,6 +4,7 @@
 :root {
   /* --primary-color: #003699; */
   --primary-color: #90b36d;
+  --primary-color--dark: #283618;
   --dark-color: #333333;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
@@ -364,6 +365,13 @@ img {
 .badge-primary,
 .alert-primary {
   background: var(--primary-color);
+  color: #fff;
+}
+.btn-primary--dark,
+.bg-primary--dark,
+.badge-primary--dark,
+.alert-primary--dark {
+  background: var(--primary-color--dark);
   color: #fff;
 }
 .icon-primary {

@@ -3,7 +3,7 @@
   padding: 0.7rem 0;
   z-index: 1;
   width: 100%;
-  border-bottom: solid 1px var(--primary-color);
+  border-bottom: solid 1px var(--primary-color--dark);
   opacity: 0.9;
   margin-bottom: 1rem;
 }
