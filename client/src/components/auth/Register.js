@@ -28,25 +28,25 @@ const Register = (props) => {
   }, [errors, isAuthenticated, props.history]);
 
   const [user, setUser] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     password2: "",
   });
 
-  const { name, email, password, password2 } = user;
+  const { username, email, password, password2 } = user;
 
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (name === "" || email === "" || password === "") {
-      setAlert("Please enter all fields", "danger");
-    } else if (password !== password2) {
-      setAlert("Passwords do not match", "danger");
+
+    if (password !== password2) {
+      window.alert("Passwords do not match");
+      //setAlert("Passwords do not match", "danger");
     } else {
       register({
-        name,
+        username,
         email,
         password,
       });
@@ -60,17 +60,17 @@ const Register = (props) => {
       </h1>
       <form onSubmit={onSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Username*</label>
           <input
             type="text"
-            name="name"
-            value={name}
+            name="username"
+            value={username}
             onChange={onChange}
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email Address</label>
+          <label htmlFor="email">Email Address*</label>
           <input
             type="email"
             name="email"
@@ -80,7 +80,7 @@ const Register = (props) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password*</label>
           <input
             type="password"
             name="password"
@@ -91,7 +91,7 @@ const Register = (props) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password2">Confirm Password</label>
+          <label htmlFor="password2">Confirm Password*</label>
           <input
             type="password"
             name="password2"
@@ -104,7 +104,7 @@ const Register = (props) => {
         <input
           type="submit"
           value="Register"
-          className="btn btn-primary btn-block"
+          className="btn btn-primary--dark btn-block"
         />
       </form>
     </div>

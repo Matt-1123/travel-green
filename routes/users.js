@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const { check, validationResult } = require("express-validator");
 
 // import User model
@@ -12,7 +14,7 @@ const User = require("../models/User");
 router.post(
   "/",
   [
-    check("name", "Name is required").not().isEmpty(),
+    check("username", "Username is required").not().isEmpty(),
     check("email", "Please include a valid email").isEmail(),
     check(
       "password",
@@ -25,19 +27,19 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     try {
-      // Check if there is a user with the email passed in.
-      let user = await User.findOne({ email: email });
+      // Find user by email with mongoose's findOne method
+      let user = await User.findOne({ email });
 
       if (user) {
         return res.status(400).json({ msg: "User already exists." });
       }
 
-      // use User model to create a new user instance
+      // use User model to create a new user
       user = new User({
-        name,
+        username,
         email,
         password,
       });
@@ -51,7 +53,23 @@ router.post(
       // Save user to database.
       await user.save();
 
-      res.send("User saved");
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        {
+          expiresIn: 360000,
+        },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");

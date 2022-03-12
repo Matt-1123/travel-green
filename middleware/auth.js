@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken"); // used to verify token
 const config = require("config"); // access to secret
 
-// Note: When using middleware functions, you need to call the 'next' function to indicate moving on to the next piece of middleware.
 module.exports = function (req, res, next) {
-  // Get token from header sent in the request object
+  // Get token from header
   const token = req.header("x-auth-token");
 
   // Check if no token
