@@ -602,7 +602,7 @@ const TravelForm = () => {
         <input
           type="submit"
           value="Calculate Impact"
-          className="btn btn-primary btn-block"
+          className="btn btn-primary--dark btn-block"
         />
       </div>
 
