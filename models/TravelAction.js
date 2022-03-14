@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 
 // Note: Schema maps to the actions MongoDB collection and defines the shape of the documents within that collection.
 const TravelActionSchema = mongoose.Schema({
-  username: String,
+  username: {
+    type: mongoose.Schema.Types.String,
+    ref: "users", // refer to the 'users' collection
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users", // refer to the 'users' collection
