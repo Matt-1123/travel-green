@@ -16,7 +16,7 @@ import {
 
 const AuthState = (props) => {
   const initialState = {
-    // access token from browser's local storage (Note: this is just vanilla JS)
+    // access token from browser's local storage
     token: localStorage.getItem("token"),
     isAuthenticated: null, // check if user is logged in
     loading: true,

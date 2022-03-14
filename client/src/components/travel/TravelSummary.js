@@ -100,16 +100,14 @@ const TravelSummary = (props) => {
 
   const handleSave = () => {
     const travelAction = {
-      user: { name: "Matt Russo" },
-      id: 4,
-      carbonPrevented: carbonPrevented,
-      title: title,
-      description: description,
-      date: date,
-      usedTravelType: usedTravelType,
-      usedDistance: usedDistance,
-      avoidedTravelType: avoidedTravelType,
-      avoidedDistance: avoidedDistance,
+      carbonPrevented,
+      title,
+      description,
+      date,
+      usedTravelType,
+      usedDistance,
+      avoidedTravelType,
+      avoidedDistance,
     };
 
     // TODO: Save to database

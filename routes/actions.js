@@ -5,11 +5,13 @@ const { check, validationResult } = require("express-validator");
 const TravelAction = require("../models/TravelAction");
 
 // @route     GET api/actions
-// @desc      Get all users actions
+// @desc      Get all user's actions
 // @access    Private
 router.get("/", auth, async (req, res) => {
   try {
-    const actions = await Action.find({ user: req.user.id }).sort({ date: -1 });
+    const actions = await TravelAction.find({ user: req.user.id }).sort({
+      date: -1,
+    });
     res.json(actions);
   } catch (err) {
     console.error(err.message);
@@ -25,15 +27,19 @@ router.post(
   [
     auth,
     [
+      check(
+        "carbonPrevented",
+        "A carbon prevented calculation result is required"
+      ).isNumeric(),
       check("title", "Title is required").not().isEmpty(),
-      check("impact", "A number for kg CO2 prevented is required")
+      // check("date", "A date is required").isDate(),
+      check("date", "A date is required").not().isEmpty(),
+      check("usedTravelType", "Used travel type is required").not().isEmpty(),
+      check("usedDistance", "Used distance is required").isNumeric(),
+      check("avoidedTravelType", "Avoided travel type is required")
         .not()
         .isEmpty(),
-      check("travelTypeUsed", "Travel type used is required").not().isEmpty(),
-      check("travelTypeAvoided", "Travel type avoided is required")
-        .not()
-        .isEmpty(),
-      check("actionType", "Action type is required").not().isEmpty(),
+      check("avoidedDistance", "Avoided distance is required").isNumeric(),
     ],
   ],
   async (req, res) => {
@@ -44,22 +50,27 @@ router.post(
     }
 
     const {
-      actionType,
-      date,
       title,
-      impact,
-      travelTypeUsed,
-      travelTypeAvoided,
+      description,
+      date,
+      usedTravelType,
+      usedDistance,
+      avoidedTravelType,
+      avoidedDistance,
+      carbonPrevented,
     } = req.body;
 
     try {
-      const newAction = new Action({
-        actionType,
-        date,
+      const newAction = new TravelAction({
+        username: req.user.username,
         title,
-        impact,
-        travelTypeUsed,
-        travelTypeAvoided,
+        description,
+        date,
+        usedTravelType,
+        usedDistance,
+        avoidedTravelType,
+        avoidedDistance,
+        carbonPrevented,
         user: req.user.id,
       });
 
@@ -67,7 +78,7 @@ router.post(
 
       res.json(action);
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
