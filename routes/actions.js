@@ -87,8 +87,36 @@ router.post(
 // @route     PUT api/actions/:id
 // @desc      Update action
 // @access    Private
-router.put("/:id", (req, res) => {
-  res.send("Update an action");
+router.put("/:id", auth, async (req, res) => {
+  const { title, description, date } = req.body;
+
+  // Build travel action object
+  const actionFields = {};
+  if (title) actionFields.title = title;
+  if (description) actionFields.description = description;
+  if (date) actionFields.date = date;
+
+  try {
+    let action = await TravelAction.findById(req.params.id);
+
+    if (!action) return res.status(404).json({ msg: "Action not found" });
+
+    // Make sure user owns action
+    if (action.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    action = await TravelAction.findByIdAndUpdate(
+      req.params.id,
+      { $set: actionFields },
+      { new: true }
+    );
+
+    res.json(action);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // @route     DELETE api/actions/:id
