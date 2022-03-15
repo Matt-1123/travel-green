@@ -25,16 +25,15 @@ export default (state, action) => {
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
-        ...action.payload, // add token to state
+        ...action.payload, // token
         isAuthenticated: true,
         loading: false,
-        test: "test",
       };
     case REGISTER_FAIL:
     case LOGIN_FAIL:
     case AUTH_ERROR:
       // remove token from storage
-      // localStorage.removeItem("token");
+      localStorage.removeItem("token");
       return {
         ...state,
         token: null,

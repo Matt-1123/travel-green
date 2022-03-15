@@ -17,15 +17,13 @@ const Register = (props) => {
     email: "",
     password: "",
     password2: "",
-    date: "",
   });
 
-  const { username, email, password, password2, date } = user;
+  const { username, email, password, password2 } = user;
 
   useEffect(() => {
     if (isAuthenticated) {
       // redirect to home page
-      console.log(props.history);
       navigate("/");
     }
 
@@ -49,7 +47,6 @@ const Register = (props) => {
         username,
         email,
         password,
-        date,
       });
     }
   };

@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import axios from "axios";
 import AuthContext from "./authContext";
 import authReducer from "./authReducer";
-// import setAuthToken from "../../utils/setAuthToken";
+import setAuthToken from "../../utils/setAuthToken";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -30,21 +30,16 @@ const AuthState = (props) => {
 
   // Load User
   const loadUser = async () => {
-    console.log("load user");
-    console.log(localStorage);
-
     if (localStorage.token) {
-      console.log("there is a token in local storage");
-      // setAuthToken(localStorage.token);
+      setAuthToken(localStorage.token);
     }
 
     try {
       // check token to see if valid user
       const res = await axios.get("/api/auth");
-      console.log(res);
       dispatch({ type: USER_LOADED, payload: res.data });
     } catch (err) {
-      console.log("load user error");
+      console.error("load user error");
       dispatch({ type: AUTH_ERROR });
     }
   };

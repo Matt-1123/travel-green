@@ -1,10 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Feed from "../Feed";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
 
 const Home = () => {
   const authContext = useContext(AuthContext);
+
+  useEffect(() => {
+    authContext.loadUser();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="grid-2-5-2 my-2" style={{ alignItems: "start" }}>
