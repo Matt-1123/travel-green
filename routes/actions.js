@@ -122,8 +122,24 @@ router.put("/:id", auth, async (req, res) => {
 // @route     DELETE api/actions/:id
 // @desc      Delete action
 // @access    Private
-router.delete("/:id", (req, res) => {
-  res.send("Delete action");
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    let action = await TravelAction.findById(req.params.id);
+
+    if (!action) return res.status(404).json({ msg: "Action not found" });
+
+    // Make sure user owns action
+    if (action.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    await TravelAction.findByIdAndRemove(req.params.id);
+
+    res.json({ msg: "Action deleted" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;
