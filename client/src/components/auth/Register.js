@@ -5,12 +5,22 @@ import { useNavigate } from "react-router-dom";
 
 const Register = (props) => {
   const alertContext = useContext(AlertContext);
-  const authContext = useContext(AuthContext);
-
   const { setAlert } = alertContext;
+
+  const authContext = useContext(AuthContext);
   const { register, errors, clearErrors, isAuthenticated } = authContext;
 
   let navigate = useNavigate();
+
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+    password2: "",
+    date: "",
+  });
+
+  const { username, email, password, password2, date } = user;
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -27,40 +37,31 @@ const Register = (props) => {
     // eslint-disable-next-line
   }, [errors, isAuthenticated, props.history]);
 
-  const [user, setUser] = useState({
-    username: "",
-    email: "",
-    password: "",
-    password2: "",
-  });
-
-  const { username, email, password, password2 } = user;
-
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     if (password !== password2) {
-      window.alert("Passwords do not match");
-      //setAlert("Passwords do not match", "danger");
+      setAlert("Passwords do not match", "danger");
     } else {
       register({
         username,
         email,
         password,
+        date,
       });
     }
   };
 
   return (
-    <div className="form-container-narrow">
+    <div className="form-container-narrow mt-3">
       <h1>
         Account <span className="text-primary">Register</span>
       </h1>
       <form onSubmit={onSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Username*</label>
+          <label htmlFor="username">Username*</label>
           <input
             type="text"
             name="username"
