@@ -84,7 +84,6 @@ const AuthState = (props) => {
       // Note: the proxy host in package.json sends request to localhost:5000, so no need to enter it here.
       const res = await axios.post("/api/auth", formData, config);
 
-      console.log(res.data);
       // send token to reducer
       dispatch({
         type: LOGIN_SUCCESS,

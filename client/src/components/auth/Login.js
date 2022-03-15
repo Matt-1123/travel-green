@@ -24,7 +24,7 @@ const Login = (props) => {
     }
     // get rid of errors about clearErrors and setAlert not being dependencies of useEffect. Adding these would cause an infinite loop
     // eslint-disable-next-line
-  }, [errors, isAuthenticated, props.history]);
+  }, [errors, isAuthenticated]);
 
   const [user, setUser] = useState({
     email: "",
@@ -37,6 +37,7 @@ const Login = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
     if (email === "" || password === "") {
       setAlert("Please fill in all fields.", "danger");
     } else {
@@ -48,7 +49,7 @@ const Login = (props) => {
   };
 
   return (
-    <div className="form-container-narrow">
+    <div className="form-container-narrow mt-3">
       <h1>
         Account <span className="text-primary">Login</span>
       </h1>

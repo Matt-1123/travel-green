@@ -33,7 +33,7 @@ const Register = (props) => {
     }
     // get rid of errors about clearErrors and setAlert not being dependencies of useEffect. Adding these would cause an infinite loop
     // eslint-disable-next-line
-  }, [errors, isAuthenticated, props.history]);
+  }, [errors, isAuthenticated]);
 
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
 
