@@ -2,7 +2,7 @@
   "name": "travel-green",
   "version": "0.1.0",
   "engines": {
-    "node": ">=16.0.0"
+    "node": "16.x"
   },
   "description": "Log carbon-reducing activities",
   "main": "server.js",
