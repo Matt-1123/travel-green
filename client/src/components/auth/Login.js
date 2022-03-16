@@ -22,7 +22,6 @@ const Login = (props) => {
       setAlert(errors, "danger");
       clearErrors();
     }
-    // get rid of errors about clearErrors and setAlert not being dependencies of useEffect. Adding these would cause an infinite loop
     // eslint-disable-next-line
   }, [errors, isAuthenticated]);
 

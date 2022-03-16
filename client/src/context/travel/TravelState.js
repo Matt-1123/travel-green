@@ -1,9 +1,13 @@
 import React, { useReducer } from "react";
 import axios from "axios";
-import { v4 as uuid } from "uuid";
 import TravelContext from "./travelContext";
-import TravelReducer from "./travelReducer";
-import { ADD_TRAVEL } from "../types";
+import travelReducer from "./travelReducer";
+import {
+  ADD_TRAVEL,
+  DELETE_TRAVEL,
+  UPDATE_TRAVEL,
+  TRAVEL_ERROR,
+} from "../types";
 
 const TravelState = (props) => {
   const initialState = {
@@ -49,14 +53,51 @@ const TravelState = (props) => {
     ],
   };
 
-  const [state, dispatch] = useReducer(TravelReducer, initialState);
+  const [state, dispatch] = useReducer(travelReducer, initialState);
 
-  // Add Travel
-  const addTravel = (travel) => {
-    // Note: MongoDB adds id
-    // uuid will temporarily provide the id until backend is setup
-    // travel.id = uuid.v4();
-    dispatch({ type: ADD_TRAVEL, payload: travel });
+  // Add Travel Action
+  const addTravel = async (travel) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post("api/actions");
+    } catch (err) {
+      dispatch({ type: TRAVEL_ERROR });
+    }
+  };
+
+  // Update Travel Action
+  const updateTravel = async (travel) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post("api/actions/");
+    } catch (err) {
+      dispatch({ type: TRAVEL_ERROR });
+    }
+  };
+
+  // Delete Travel action
+  const deleteTravel = async (travel) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post("api/actions/");
+    } catch (err) {
+      dispatch({ type: TRAVEL_ERROR });
+    }
   };
 
   return (
@@ -64,6 +105,8 @@ const TravelState = (props) => {
       value={{
         travelActions: state.travelActions,
         addTravel,
+        updateTravel,
+        deleteTravel,
       }}
     >
       {props.children}
