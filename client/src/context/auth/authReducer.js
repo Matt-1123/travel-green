@@ -21,7 +21,6 @@ export default (state, action) => {
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      // Both of these use the token retrieved with the auth API.
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
@@ -32,6 +31,7 @@ export default (state, action) => {
     case REGISTER_FAIL:
     case LOGIN_FAIL:
     case AUTH_ERROR:
+    case LOGOUT:
       // remove token from storage
       localStorage.removeItem("token");
       return {
