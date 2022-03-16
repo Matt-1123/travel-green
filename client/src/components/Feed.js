@@ -14,7 +14,7 @@ const Feed = () => {
   return (
     <Fragment>
       {travelActions.map((action) => (
-        <TravelFeedItem key={action.id} action={action} />
+        <TravelFeedItem key={action._id} action={action} />
       ))}
     </Fragment>
   );

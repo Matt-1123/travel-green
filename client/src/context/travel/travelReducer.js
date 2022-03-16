@@ -1,4 +1,4 @@
-import { ADD_TRAVEL } from "../types";
+import { ADD_TRAVEL, TRAVEL_ERROR } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
@@ -6,6 +6,11 @@ export default (state, action) => {
       return {
         ...state,
         travelActions: [...state.travelActions, action.payload],
+      };
+    case TRAVEL_ERROR:
+      return {
+        ...state,
+        error: action.payload,
       };
     default:
       return state;

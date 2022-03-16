@@ -11,52 +11,16 @@ import {
 
 const TravelState = (props) => {
   const initialState = {
-    travelActions: [
-      {
-        user: { name: "Matt Russo" },
-        id: 1,
-        carbonPrevented: 10,
-        title: "Morning Commute",
-        description:
-          "Nice day. Decided to walk instead of taking the car to work.",
-        date: "January 1, 2022",
-        usedTravelType: "walking",
-        usedDistance: 2,
-        avoidedTravelType: "driving",
-        avoidedDistance: 2,
-      },
-      {
-        user: { name: "Matt Russo" },
-        id: 2,
-        carbonPrevented: 124.3,
-        title: "Morning Commute",
-        description: "",
-        date: "January 1, 2022",
-        usedTravelType: "bicycling",
-        usedDistance: 26.2,
-        avoidedTravelType: "driving",
-        avoidedDistance: 29,
-      },
-      {
-        user: { name: "Matt Russo" },
-        id: 3,
-        carbonPrevented: 5.5,
-        title: "Morning Commute",
-        description:
-          "Nice day. Decided to walk instead of taking the car to work.",
-        date: "January 1, 2022",
-        usedTravelType: "bicycling",
-        usedDistance: 8,
-        avoidedTravelType: "driving",
-        avoidedDistance: 11,
-      },
-    ],
+    travelActions: [],
+    current: null,
+    filtered: null,
+    error: null,
   };
 
   const [state, dispatch] = useReducer(travelReducer, initialState);
 
   // Add Travel Action
-  const addTravel = async (travel) => {
+  const addTravel = async (travelAction) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -64,9 +28,11 @@ const TravelState = (props) => {
     };
 
     try {
-      const res = await axios.post("api/actions");
+      const res = await axios.post("/api/actions", travelAction, config);
+
+      dispatch({ type: ADD_TRAVEL, payload: res.data });
     } catch (err) {
-      dispatch({ type: TRAVEL_ERROR });
+      dispatch({ type: TRAVEL_ERROR, payload: err.msg });
     }
   };
 
@@ -104,6 +70,9 @@ const TravelState = (props) => {
     <TravelContext.Provider
       value={{
         travelActions: state.travelActions,
+        current: state.current,
+        filtered: state.filtered,
+        error: state.error,
         addTravel,
         updateTravel,
         deleteTravel,
