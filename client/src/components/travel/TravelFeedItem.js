@@ -16,7 +16,7 @@ const TravelFeedItem = ({ action }) => {
   const [options, setOptions] = useState(false);
 
   const {
-    id,
+    _id,
     user,
     title,
     description,
@@ -75,7 +75,7 @@ const TravelFeedItem = ({ action }) => {
           <FontAwesomeIcon icon={faBicycle} className="icon-primary" />
         )}
         <h3 className="font-md ml-1">
-          <Link to={`/travel-action/${id}`} className="title">
+          <Link to={`/travel-action/${_id}`} className="title">
             {title}
           </Link>
         </h3>

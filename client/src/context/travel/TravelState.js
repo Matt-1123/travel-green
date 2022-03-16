@@ -3,6 +3,7 @@ import axios from "axios";
 import TravelContext from "./travelContext";
 import travelReducer from "./travelReducer";
 import {
+  GET_TRAVEL_ACTIONS,
   ADD_TRAVEL,
   DELETE_TRAVEL,
   UPDATE_TRAVEL,
@@ -11,13 +12,24 @@ import {
 
 const TravelState = (props) => {
   const initialState = {
-    travelActions: [],
+    travelActions: null,
     current: null,
     filtered: null,
     error: null,
   };
 
   const [state, dispatch] = useReducer(travelReducer, initialState);
+
+  // Get Travel Actions
+  const getTravelActions = async () => {
+    try {
+      const res = await axios.get("/api/actions");
+
+      dispatch({ type: GET_TRAVEL_ACTIONS, payload: res.data });
+    } catch (err) {
+      dispatch({ type: TRAVEL_ERROR, payload: err.msg });
+    }
+  };
 
   // Add Travel Action
   const addTravel = async (travelAction) => {
@@ -73,6 +85,7 @@ const TravelState = (props) => {
         current: state.current,
         filtered: state.filtered,
         error: state.error,
+        getTravelActions,
         addTravel,
         updateTravel,
         deleteTravel,
