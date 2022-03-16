@@ -11,6 +11,7 @@ import NotFound from "./components/pages/NotFound";
 import TravelForm from "./components/travel/TravelForm";
 import TravelSummary from "./components/travel/TravelSummary";
 import TravelAction from "./components/travel/TravelAction";
+import PrivateRoute from "./components/routing/PrivateRoute";
 
 import AuthState from "./context/auth/AuthState";
 import TravelState from "./context/travel/TravelState";
@@ -38,20 +39,44 @@ const App = () => {
               >
                 <Alerts />
                 <Routes>
-                  <Route exact path="/" element={<Home />} />
+                  <Route
+                    exact
+                    path="/"
+                    element={
+                      <PrivateRoute>
+                        <Home />
+                      </PrivateRoute>
+                    }
+                  />
                   <Route exact path="/register" element={<Register />} />
                   <Route exact path="/login" element={<Login />} />
                   <Route exact path="/about" element={<About />} />
-                  <Route exact path="/add-travel" element={<TravelForm />} />
+                  <Route
+                    exact
+                    path="/add-travel"
+                    element={
+                      <PrivateRoute>
+                        <TravelForm />
+                      </PrivateRoute>
+                    }
+                  />
                   <Route
                     exact
                     path="/add-travel/summary"
-                    element={<TravelSummary />}
+                    element={
+                      <PrivateRoute>
+                        <TravelSummary />
+                      </PrivateRoute>
+                    }
                   />
                   <Route
                     exact
                     path="/travel-action/:id"
-                    element={<TravelAction />}
+                    element={
+                      <PrivateRoute>
+                        <TravelAction />
+                      </PrivateRoute>
+                    }
                   />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
