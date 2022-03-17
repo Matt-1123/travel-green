@@ -13,13 +13,6 @@
 
 In the project directory, you can run:
 
-"start": "node server.js",
-"server": "nodemon server.js",
-"client": "npm start --prefix client",
-"clientinstall": "npm install --prefix client",
-"dev": "concurrently \"npm run server\" \"npm run client\"",
-"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
-
 ### `npm start" : "node server.js"`,
 
 The app is built using `create-react-app` so this command Runs the app in Development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser. You also need to run the server file as well to completely run the app. The page will reload if you make edits.
