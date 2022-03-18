@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import dateConverter from "../../utils/dateConverter";
 import {
   faWalking,
   faBicycle,
@@ -18,6 +19,7 @@ const TravelFeedItem = ({ action }) => {
   const {
     _id,
     user,
+    username,
     title,
     description,
     date,
@@ -27,6 +29,8 @@ const TravelFeedItem = ({ action }) => {
     avoidedTravelType,
     avoidedDistance,
   } = action;
+
+  console.log(user);
 
   const handleOptions = () => {
     setOptions(!options);
@@ -42,8 +46,8 @@ const TravelFeedItem = ({ action }) => {
       >
         <img src="" alt="" style={styles.avatar} />
         <div style={styles.meta}>
-          <p className="font-sm">{user.name}</p>
-          <p className="font-sm">{date}</p>
+          <p className="font-sm">{username}</p>
+          <p className="font-sm">{dateConverter(date)}</p>
         </div>
         <div
           style={{
