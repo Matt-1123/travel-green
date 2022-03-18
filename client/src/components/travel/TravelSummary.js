@@ -13,14 +13,11 @@ const date = localStorage.getItem("date");
 const usedTravelType = localStorage.getItem("usedTravelType");
 const usedOrigin = localStorage.getItem("usedOrigin");
 const usedDestination = localStorage.getItem("usedDestination");
-// const avoidedTravelType = localStorage.getItem("avoidedTravelType");
-// const selectedMake = JSON.parse(localStorage.getItem("selectedMake"));
-// const selectedModel = JSON.parse(localStorage.getItem("selectedModel"));
 const avoidedOrigin = localStorage.getItem("avoidedOrigin");
 const avoidedDestination = localStorage.getItem("avoidedDestination");
 
 const TravelSummary = (props) => {
-  // let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const travelContext = useContext(TravelContext);
   const { addTravel } = travelContext;
@@ -110,82 +107,94 @@ const TravelSummary = (props) => {
       avoidedDistance,
     };
 
-    // TODO: Save to database
+    // Save to database
     addTravel(travelAction);
 
-    // TODO: Clear local storage
+    // TODO: Clear local storage of travel action items
+    localStorage.setItem("title", "");
+    localStorage.setItem("description", "");
+    localStorage.setItem("date", "");
+    localStorage.setItem("usedTravelType", "");
+    localStorage.setItem("usedOrigin", "");
+    localStorage.setItem("usedDestination", "");
+    localStorage.setItem("avoidedOrigin", "");
+    localStorage.setItem("avoidedDestination", "");
 
-    // TODO: Prevent user from returning to this page using useHistory hook.
+    // Redirect to home page
+    navigate("/");
   };
 
   if (loading) return <Spinner />;
 
   return (
     <Fragment>
-      {/* <button onClick={navigate(-1)}>Edit</button> */}
-      <h1>Travel Action Summary</h1>
-      <div className="container-narrow bg-dark">
-        <p>Title: {title}</p>
-        <p>Description: {description}</p>
-        <p>Date: {date}</p>
-      </div>
-      <div className="container-narrow bg-dark">
-        CO2e prevented:{" "}
-        <span className="font-lg text-primary">{carbonPrevented} kg</span>
-      </div>
-      <div className="grid-2">
-        <div className="card bg-dark" style={styles.mapCard}>
-          <h3 className="px-1 mb-1">Travel Used</h3>
-          <div className="grid-2" style={{ gridGap: 0 }}>
-            <div style={styles.mapData}>
-              <p className="font-lg" style={{ marginBottom: 0 }}>
-                {usedDistance}
-              </p>
-              <p className="font-sm">mi</p>
+      <div className="container-narrow">
+        <h1>Travel Action Summary</h1>
+        <div className="container-narrow bg-dark">
+          <p>Title: {title}</p>
+          {description && <p>Description: {description}</p>}
+          <p>Date: {date}</p>
+        </div>
+        <div className="container-narrow bg-dark">
+          CO2e prevented:{" "}
+          <span className="font-lg text-primary">{carbonPrevented} kg</span>
+        </div>
+        <div className="grid-2">
+          <div className="card bg-dark" style={styles.mapCard}>
+            <h3 className="px-1 mb-1">Travel Used</h3>
+            <div className="grid-2" style={{ gridGap: 0 }}>
+              <div style={styles.mapData}>
+                <p className="font-lg" style={{ marginBottom: 0 }}>
+                  {usedDistance}
+                </p>
+                <p className="font-sm">mi</p>
+              </div>
+              <div style={styles.mapData}>
+                <p className="font-lg" style={{ marginBottom: 0 }}>
+                  <FontAwesomeIcon
+                    icon={usedTravelType === "walking" ? faWalking : faBicycle}
+                    className="icon-primary"
+                  />
+                </p>
+                <p className="font-sm">Travel Type</p>
+              </div>
             </div>
-            <div style={styles.mapData}>
-              <p className="font-lg" style={{ marginBottom: 0 }}>
-                <FontAwesomeIcon
-                  icon={usedTravelType === "walking" ? faWalking : faBicycle}
-                  className="icon-primary"
-                />
+          </div>
+          <div className="card bg-dark" style={styles.mapCard}>
+            <h3 className="px-1 mb-1">Travel Avoided</h3>
+            <div className="grid-2" style={{ gridGap: 0 }}>
+              <div style={styles.mapData}>
+                <p className="font-lg" style={{ marginBottom: 0 }}>
+                  {avoidedDistance}
+                </p>
+                <p className="font-sm">mi</p>
+              </div>
+              <div style={styles.mapData}>
+                <p className="font-lg" style={{ marginBottom: 0 }}>
+                  <FontAwesomeIcon
+                    icon={avoidedTravelType === "driving" ? faCar : null}
+                    className="icon-warning"
+                  />
+                </p>
+                <p className="font-sm">Travel Type</p>
+              </div>
+            </div>
+            <div>
+              <p className="p-1">
+                Vehicle: {selectedMake.name} {selectedModel.displayName}
               </p>
-              <p className="font-sm">Travel Type</p>
             </div>
           </div>
         </div>
-        <div className="card bg-dark" style={styles.mapCard}>
-          <h3 className="px-1 mb-1">Travel Avoided</h3>
-          <div className="grid-2" style={{ gridGap: 0 }}>
-            <div style={styles.mapData}>
-              <p className="font-lg" style={{ marginBottom: 0 }}>
-                {avoidedDistance}
-              </p>
-              <p className="font-sm">mi</p>
-            </div>
-            <div style={styles.mapData}>
-              <p className="font-lg" style={{ marginBottom: 0 }}>
-                <FontAwesomeIcon
-                  icon={avoidedTravelType === "driving" ? faCar : null}
-                  className="icon-warning"
-                />
-              </p>
-              <p className="font-sm">Travel Type</p>
-            </div>
-          </div>
-          <div>
-            <p className="p-1">
-              Vehicle: {selectedMake.name} {selectedModel.displayName}
-            </p>
-          </div>
+        <div className="grid-3 my-2">
+          <button onClick={() => navigate(-1)} className="btn-light">
+            Edit
+          </button>
+          <button className="btn-light">Cancel</button>
+          <button className="btn-primary--dark" onClick={handleSave}>
+            Save
+          </button>
         </div>
-      </div>
-      <div className="grid-3 my-2">
-        <button className="btn-light">Edit</button>
-        <button className="btn-light">Cancel</button>
-        <button className="btn-primary--dark" onClick={handleSave}>
-          Save
-        </button>
       </div>
     </Fragment>
   );
