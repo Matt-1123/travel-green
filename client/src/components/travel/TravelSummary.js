@@ -1,11 +1,12 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
-import TravelContext from "../../context/travel/travelContext";
 import Spinner from "../layout/Spinner";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWalking, faBicycle, faCar } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import TravelContext from "../../context/travel/travelContext";
+import AlertContext from "../../context/alert/alertContext";
 
 const title = localStorage.getItem("title");
 const description = localStorage.getItem("description");
@@ -22,6 +23,9 @@ const TravelSummary = (props) => {
   const travelContext = useContext(TravelContext);
   const { addTravel } = travelContext;
 
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+
   const { state } = useLocation();
   const { avoidedTravelType, selectedMake, selectedModel } = state;
 
@@ -35,6 +39,27 @@ const TravelSummary = (props) => {
 
   // Get Distances on Page Load
   useEffect(() => {
+    if (
+      !usedOrigin ||
+      !usedDestination ||
+      !avoidedOrigin ||
+      !avoidedDestination ||
+      !usedTravelType ||
+      !avoidedTravelType
+    ) {
+      setAlert(
+        "Please fill out all fields of the Travel Action form.",
+        "danger"
+      );
+
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/");
+      }, 3000);
+    }
+
+    setLoading(true);
+
     const getDistance = async (origin, destination, mode) => {
       try {
         const res = await axios.get(
@@ -83,6 +108,7 @@ const TravelSummary = (props) => {
           `/api/carbon-interface/carbon/${distance}/${modelId}`
         );
         setCarbonPrevented(res.data);
+        setLoading(false);
       } catch (err) {
         console.error(err);
       }
@@ -91,9 +117,14 @@ const TravelSummary = (props) => {
     if (avoidedDistance) {
       getCarbon(avoidedDistance, selectedModel.id);
     }
-
-    setLoading(false);
   }, [avoidedDistance]);
+
+  // Set loading to false when CO2 calculation is done
+  useEffect(() => {
+    if (carbonPrevented) {
+      setLoading(false);
+    }
+  }, [carbonPrevented]);
 
   const handleSave = () => {
     const travelAction = {
