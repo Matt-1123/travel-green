@@ -39,6 +39,7 @@ const TravelSummary = (props) => {
 
   // Get Distances on Page Load
   useEffect(() => {
+    // If missing info, redirect to home route with a danger alert.
     if (
       !usedOrigin ||
       !usedDestination ||

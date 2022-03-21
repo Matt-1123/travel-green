@@ -21,6 +21,7 @@ import setAuthToken from "./utils/setAuthToken";
 
 import "./App.css";
 
+// Set JSON Web Token as a common header in axios
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
