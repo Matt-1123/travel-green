@@ -4,8 +4,8 @@
 :root {
   /* --primary-color: #003699; */
   --primary-color: #90b36d;
-  --primary-color--dark: #283618;
-  --dark-color: #333333;
+  --primary-color--dark: #344620;
+  --dark-color: #222;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --warning-color: #cb997e;
@@ -34,7 +34,7 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: #222;
+  background-color: #0d0d0d;
   color: var(--light-color);
 }
 
