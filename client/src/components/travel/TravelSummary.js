@@ -55,7 +55,7 @@ const TravelSummary = (props) => {
 
       setTimeout(() => {
         setLoading(false);
-        navigate("/");
+        navigate(-1);
       }, 3000);
     }
 
@@ -99,6 +99,13 @@ const TravelSummary = (props) => {
 
     usedDistanceSetter();
     avoidedDistanceSetter();
+
+    // On unmount, reset state
+    return () => {
+      setUsedDistance(null);
+      setAvoidedDistance(null);
+      setCarbonPrevented(null);
+    };
   }, []);
 
   // After avoided distance is calculated, calculate CO2 emissions prevented using model id and distance
@@ -127,6 +134,28 @@ const TravelSummary = (props) => {
     }
   }, [carbonPrevented]);
 
+  // Clear local storage of travel action items
+  const clearLocalStorage = () => {
+    localStorage.setItem("title", "");
+    localStorage.setItem("description", "");
+    localStorage.setItem("date", "");
+    localStorage.setItem("usedTravelType", "");
+    localStorage.setItem("usedOrigin", "");
+    localStorage.setItem("usedDestination", "");
+    localStorage.setItem("avoidedOrigin", "");
+    localStorage.setItem("avoidedDestination", "");
+  };
+
+  // Cancel Action (clear local storage and redirect home)
+  const handleCancel = () => {
+    // Clear local storage of travel action items
+    clearLocalStorage();
+
+    // Redirect to home page
+    navigate("/");
+  };
+
+  // Save action to db
   const handleSave = () => {
     const travelAction = {
       carbonPrevented,
@@ -142,15 +171,8 @@ const TravelSummary = (props) => {
     // Save to database
     addTravel(travelAction);
 
-    // TODO: Clear local storage of travel action items
-    localStorage.setItem("title", "");
-    localStorage.setItem("description", "");
-    localStorage.setItem("date", "");
-    localStorage.setItem("usedTravelType", "");
-    localStorage.setItem("usedOrigin", "");
-    localStorage.setItem("usedDestination", "");
-    localStorage.setItem("avoidedOrigin", "");
-    localStorage.setItem("avoidedDestination", "");
+    // Clear local storage of travel action items
+    clearLocalStorage();
 
     // Redirect to home page
     navigate("/");
@@ -219,11 +241,13 @@ const TravelSummary = (props) => {
           </div>
         </div>
         <div className="grid-3 my-2">
-          <button onClick={() => navigate(-1)} className="btn-light">
+          <button onClick={() => navigate(-1)} className="btn btn-light">
             Edit
           </button>
-          <button className="btn-light">Cancel</button>
-          <button className="btn-primary--dark" onClick={handleSave}>
+          <button className="btn btn-light" onClick={handleCancel}>
+            Cancel
+          </button>
+          <button className="btn btn-primary--dark" onClick={handleSave}>
             Save
           </button>
         </div>
