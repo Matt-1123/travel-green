@@ -102,6 +102,7 @@ const TravelSummary = (props) => {
 
     // On unmount, reset state
     return () => {
+      // TODO: (Issue #3) Resolve these three values not resetting on component unmount.
       setUsedDistance(null);
       setAvoidedDistance(null);
       setCarbonPrevented(null);

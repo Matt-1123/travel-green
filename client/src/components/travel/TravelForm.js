@@ -9,16 +9,6 @@ import { useNavigate } from "react-router-dom";
 const TravelForm = () => {
   let navigate = useNavigate();
 
-  const usedTravelTypeOptions = [
-    { value: "walking", label: "Walking" },
-    { value: "bicycling", label: "Bicycling" },
-  ];
-
-  const avoidedTravelTypeOptions = [
-    { value: "", label: "Select a travel type" },
-    { value: "driving", label: "Driving" },
-  ];
-
   // Title
   const [title, setTitle] = useState(() => {
     // Get stored value from local storage and if present set it as the initial state.
@@ -160,6 +150,16 @@ const TravelForm = () => {
       );
     });
   }, [vehicleMakes]);
+
+  const usedTravelTypeOptions = [
+    { value: "walking", label: "Walking" },
+    { value: "bicycling", label: "Bicycling" },
+  ];
+
+  const avoidedTravelTypeOptions = [
+    { value: "", label: "Select a travel type" },
+    { value: "driving", label: "Driving" },
+  ];
 
   // Purpose: Get vehicle makes from api/carbon-interface/makes and populate vehicle makes dropdown
   // Triggered by: selectedMake
