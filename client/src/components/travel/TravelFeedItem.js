@@ -30,8 +30,6 @@ const TravelFeedItem = ({ action }) => {
     avoidedDistance,
   } = action;
 
-  console.log(user);
-
   const handleOptions = () => {
     setOptions(!options);
   };

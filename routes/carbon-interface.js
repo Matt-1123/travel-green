@@ -46,8 +46,6 @@ router.get("/models/:makeid", async (req, res) => {
       }
     );
 
-    console.log(res.get("Access-Control-Allow-Origin"));
-    console.log(response.data);
     res.json(response.data);
   } catch (err) {
     console.error(err.message);
@@ -61,7 +59,6 @@ router.get("/models/:makeid", async (req, res) => {
 router.get("/carbon/:distance/:modelId", async (req, res) => {
   const distance = req.params.distance;
   const modelId = req.params.modelId;
-  console.log(`distance: ${distance}, modelId: ${modelId}`);
 
   try {
     const tripData = {
