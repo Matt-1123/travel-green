@@ -12,10 +12,6 @@ const title = localStorage.getItem("title");
 const description = localStorage.getItem("description");
 const date = localStorage.getItem("date");
 const usedTravelType = localStorage.getItem("usedTravelType");
-const usedOrigin = localStorage.getItem("usedOrigin");
-const usedDestination = localStorage.getItem("usedDestination");
-const avoidedOrigin = localStorage.getItem("avoidedOrigin");
-const avoidedDestination = localStorage.getItem("avoidedDestination");
 
 const TravelSummary = (props) => {
   const navigate = useNavigate();
@@ -39,6 +35,12 @@ const TravelSummary = (props) => {
 
   // Get Distances on Page Load
   useEffect(() => {
+    const usedTravelType = localStorage.getItem("usedTravelType");
+    const usedOrigin = localStorage.getItem("usedOrigin");
+    const usedDestination = localStorage.getItem("usedDestination");
+    const avoidedOrigin = localStorage.getItem("avoidedOrigin");
+    const avoidedDestination = localStorage.getItem("avoidedDestination");
+
     // If missing info, redirect to home route with a danger alert.
     if (
       !usedOrigin ||
