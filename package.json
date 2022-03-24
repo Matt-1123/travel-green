@@ -1,10 +1,10 @@
 {
-  "name": "travel-green",
+  "name": "project-earth-health",
   "version": "0.1.0",
   "engines": {
     "node": "16.x"
   },
-  "description": "Log carbon-reducing activities",
+  "description": "Log environmentally friendly activities",
   "main": "server.js",
   "private": true,
   "dependencies": {

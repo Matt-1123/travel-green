@@ -145,7 +145,7 @@ Navbar.propTypes = {
 };
 
 Navbar.defaultProps = {
-  title: "Travel Green",
+  title: "Project Earth Health",
 };
 
 export default Navbar;
