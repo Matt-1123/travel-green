@@ -10,15 +10,12 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import TravelContext from "../../context/travel/travelContext";
 
 const TravelFeedItem = ({ action }) => {
-  const travelContext = useContext(TravelContext);
   const [options, setOptions] = useState(false);
 
   const {
     _id,
-    user,
     username,
     title,
     description,
@@ -70,12 +67,21 @@ const TravelFeedItem = ({ action }) => {
         className="flex"
         style={{ alignItems: "center", marginBottom: ".25em" }}
       >
-        {/* <img src="" alt="" className="mr-1" style={styles.icon} /> */}
-        {usedTravelType === "walking" ? (
-          <FontAwesomeIcon icon={faWalking} className="icon-primary" />
-        ) : (
-          <FontAwesomeIcon icon={faBicycle} className="icon-primary" />
-        )}
+        {(() => {
+          switch (usedTravelType) {
+            case "Walking":
+              return (
+                <FontAwesomeIcon icon={faWalking} className="icon-primary" />
+              );
+            case "Bicycling":
+              return (
+                <FontAwesomeIcon icon={faBicycle} className="icon-primary" />
+              );
+            default:
+              return null;
+          }
+        })()}
+
         <h3 className="font-md ml-1">
           <Link to={`/travel-action/${_id}`} className="title">
             {title}
