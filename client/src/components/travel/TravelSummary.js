@@ -8,12 +8,12 @@ import axios from "axios";
 import TravelContext from "../../context/travel/travelContext";
 import AlertContext from "../../context/alert/alertContext";
 
-const title = localStorage.getItem("title");
-const description = localStorage.getItem("description");
-const date = localStorage.getItem("date");
-const usedTravelType = localStorage.getItem("usedTravelType");
-
 const TravelSummary = (props) => {
+  const title = localStorage.getItem("title");
+  const description = localStorage.getItem("description");
+  const date = localStorage.getItem("date");
+  const usedTravelType = localStorage.getItem("usedTravelType");
+
   const navigate = useNavigate();
 
   const travelContext = useContext(TravelContext);
@@ -104,11 +104,11 @@ const TravelSummary = (props) => {
 
     // On unmount, reset state
     return () => {
-      // TODO: (Issue #3) Resolve these three values not resetting on component unmount.
       setUsedDistance(null);
       setAvoidedDistance(null);
       setCarbonPrevented(null);
     };
+    // eslint-disable-next-line
   }, []);
 
   // After avoided distance is calculated, calculate CO2 emissions prevented using model id and distance
@@ -128,6 +128,7 @@ const TravelSummary = (props) => {
     if (avoidedDistance) {
       getCarbon(avoidedDistance, selectedModel.id);
     }
+    // eslint-disable-next-line
   }, [avoidedDistance]);
 
   // Set loading to false when CO2 calculation is done
