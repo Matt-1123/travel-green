@@ -1,9 +1,10 @@
-<h1 align="center">Travel Green</h1>
-<p align="center">Travel Green is a web app built with Node.js, Express, and React.js.  Authenticated users can log their environmentally friendly travel actions, such as walking or bicycling, and calculate how many kilograms of carbon dioxide emissions are prevented by not using a vehicle.</p>
+<h1 align="center">Project Earth Health</h1>
+<p align="center">Project Earth Health is a web app built with Node.js, Express, and React.js.  Authenticated users can log their environmentally friendly travel actions, such as walking or bicycling, and calculate how many kilograms of carbon dioxide emissions are prevented by not using a vehicle.</p>
 
 ## Links
 
-- [Repo](https://github.com/Matt-1123/travel-green "Travel Green Repo")
+- [Live App](https://projectearthhealth.org/login "Project Earth Health app")
+- [Repo](https://github.com/Matt-1123/project-earth-health "Project Earth Health Repo")
 
 ## Screenshots
 
