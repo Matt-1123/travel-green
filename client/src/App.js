@@ -21,6 +21,10 @@ import setAuthToken from "./utils/setAuthToken";
 
 import "./App.css";
 
+import ReactGA from "react-ga4";
+ReactGA.initialize("G-7R5TN6KD5C");
+ReactGA.send("pageview");
+
 // Set JSON Web Token as a common header in axios
 if (localStorage.token) {
   setAuthToken(localStorage.token);

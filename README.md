@@ -3,7 +3,7 @@
 
 ## Links
 
-- [Live App](https://projectearthhealth.org/login "Project Earth Health app")
+- [Live App](https://projectearthhealth.org/ "projectearthhealth.org")
 - [Repo](https://github.com/Matt-1123/project-earth-health "Project Earth Health Repo")
 
 ## Screenshots
