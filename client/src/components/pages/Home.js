@@ -23,6 +23,9 @@ const Home = () => {
           <li>
             <Link to="/add-travel">Travel</Link>
           </li>
+          <li>
+            <Link to="/add-diet-action">Diet</Link>
+          </li>
         </ul>
       </div>
 
