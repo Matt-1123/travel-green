@@ -14,6 +14,7 @@ import {
   faSignOutAlt,
   faSignInAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import logo from "../../../assets/logos/logo-project-earth-health.png";
 import "./Navbar.css";
 
 const Navbar = ({ title }) => {
@@ -85,11 +86,12 @@ const Navbar = ({ title }) => {
 
   return (
     <Fragment>
-      <div className="navbar bg-primary--dark">
+      <header className="navbar bg-primary--dark pt">
         <div className="container">
-          <h1>
-            <Link to="/">{title}</Link>
-          </h1>
+          <Link to="/">
+            <img src={logo} alt="Project Earth Health" />
+          </Link>
+
           <div className="navbar-right">
             {/* <button
               ref={addActionBtnRef}
@@ -135,7 +137,7 @@ const Navbar = ({ title }) => {
             </div> */}
           </div>
         </div>
-      </div>
+      </header>
     </Fragment>
   );
 };
