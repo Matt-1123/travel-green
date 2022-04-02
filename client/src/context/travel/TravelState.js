@@ -4,6 +4,7 @@ import TravelContext from "./travelContext";
 import travelReducer from "./travelReducer";
 import {
   GET_TRAVEL_ACTIONS,
+  GET_TRAVEL_ACTION,
   ADD_TRAVEL,
   DELETE_TRAVEL,
   UPDATE_TRAVEL,
@@ -13,7 +14,7 @@ import {
 const TravelState = (props) => {
   const initialState = {
     travelActions: null,
-    current: null,
+    travelAction: null,
     filtered: null,
     error: null,
   };
@@ -26,6 +27,17 @@ const TravelState = (props) => {
       const res = await axios.get("/api/actions");
 
       dispatch({ type: GET_TRAVEL_ACTIONS, payload: res.data });
+    } catch (err) {
+      dispatch({ type: TRAVEL_ERROR, payload: err.msg });
+    }
+  };
+
+  // Get Travel Action
+  const getTravelAction = async (id) => {
+    try {
+      const res = await axios.get(`/api/actions/${id}`);
+
+      dispatch({ type: GET_TRAVEL_ACTION, payload: res.data });
     } catch (err) {
       dispatch({ type: TRAVEL_ERROR, payload: err.msg });
     }
@@ -82,10 +94,11 @@ const TravelState = (props) => {
     <TravelContext.Provider
       value={{
         travelActions: state.travelActions,
-        current: state.current,
+        travelAction: state.current,
         filtered: state.filtered,
         error: state.error,
         getTravelActions,
+        getTravelAction,
         addTravel,
         updateTravel,
         deleteTravel,

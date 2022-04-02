@@ -1,4 +1,9 @@
-import { GET_TRAVEL_ACTIONS, ADD_TRAVEL, TRAVEL_ERROR } from "../types";
+import {
+  GET_TRAVEL_ACTIONS,
+  GET_TRAVEL_ACTION,
+  ADD_TRAVEL,
+  TRAVEL_ERROR,
+} from "../types";
 
 // eslint-disable-next-line
 export default (state, action) => {
@@ -7,6 +12,12 @@ export default (state, action) => {
       return {
         ...state,
         travelActions: action.payload,
+        loading: false,
+      };
+    case GET_TRAVEL_ACTION:
+      return {
+        ...state,
+        travelAction: action.payload,
         loading: false,
       };
     case ADD_TRAVEL:

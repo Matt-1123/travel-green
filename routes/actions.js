@@ -19,6 +19,23 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// @route     GET api/actions/:id
+// @desc      Get action by id
+// @access    Private
+router.get("/:id", auth, async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    let action = await TravelAction.findById(id);
+    if (!action) return res.status(404).json({ msg: "Action not found" });
+
+    res.json(action);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route     POST api/actions
 // @desc      Add new action
 // @access    Private

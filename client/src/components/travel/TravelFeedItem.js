@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateConverter from "../../utils/dateConverter";
@@ -12,6 +12,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const TravelFeedItem = ({ action }) => {
+  const navigate = useNavigate();
+
   const [options, setOptions] = useState(false);
 
   const {
@@ -29,6 +31,15 @@ const TravelFeedItem = ({ action }) => {
 
   const handleOptions = () => {
     setOptions(!options);
+  };
+
+  // Navigate to TravelAction component on title click
+  const handleTitleLink = (e) => {
+    e.preventDefault();
+
+    navigate(`/travel-action/${_id}`, {
+      state: { id: _id },
+    });
   };
 
   return (
@@ -82,10 +93,8 @@ const TravelFeedItem = ({ action }) => {
           }
         })()}
 
-        <h3 className="font-md ml-1">
-          <Link to={`/travel-action/${_id}`} className="title">
-            {title}
-          </Link>
+        <h3 onClick={handleTitleLink} className="font-md ml-1 title">
+          {title}
         </h3>
       </div>
       {description && (
