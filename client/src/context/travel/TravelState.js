@@ -94,7 +94,7 @@ const TravelState = (props) => {
     <TravelContext.Provider
       value={{
         travelActions: state.travelActions,
-        travelAction: state.current,
+        travelAction: state.travelAction,
         filtered: state.filtered,
         error: state.error,
         getTravelActions,
