@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import dateConverter from "../../utils/dateConverter";
 import axios from "axios";
 import TravelContext from "./travelContext";
 import travelReducer from "./travelReducer";
@@ -14,7 +15,7 @@ import {
 const TravelState = (props) => {
   const initialState = {
     travelActions: null,
-    travelAction: null,
+    travelAction: {},
     filtered: null,
     error: null,
   };
@@ -36,7 +37,7 @@ const TravelState = (props) => {
   const getTravelAction = async (id) => {
     try {
       const res = await axios.get(`/api/actions/${id}`);
-
+      res.data.date = dateConverter(res.data.date);
       dispatch({ type: GET_TRAVEL_ACTION, payload: res.data });
     } catch (err) {
       dispatch({ type: TRAVEL_ERROR, payload: err.msg });

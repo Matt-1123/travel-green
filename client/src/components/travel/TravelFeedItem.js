@@ -43,7 +43,7 @@ const TravelFeedItem = ({ action }) => {
   };
 
   return (
-    <div className="card bg-dark">
+    <div className="card bg-dark feed-item">
       <div
         className="grid mb"
         style={{
@@ -93,7 +93,11 @@ const TravelFeedItem = ({ action }) => {
           }
         })()}
 
-        <h3 onClick={handleTitleLink} className="font-md ml-1 title">
+        <h3
+          onClick={handleTitleLink}
+          className="font-md ml-1 title"
+          style={{ cursor: "pointer" }}
+        >
           {title}
         </h3>
       </div>

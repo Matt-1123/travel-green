@@ -23,6 +23,18 @@ const TravelAction = () => {
   const travelContext = useContext(TravelContext);
   const { travelAction, getTravelAction } = travelContext;
 
+  const {
+    username,
+    carbonPrevented,
+    title,
+    description,
+    date,
+    usedDistance,
+    avoidedDistance,
+    usedTravelType,
+    avoidedTravelType,
+  } = travelAction;
+
   useEffect(() => {
     const getData = async (id) => {
       try {
@@ -33,7 +45,7 @@ const TravelAction = () => {
     };
 
     getData(id);
-    setLoading(false);
+    if (travelAction) setLoading(false);
     // eslint-disable-next-line
   }, []);
 
@@ -49,6 +61,14 @@ const TravelAction = () => {
   return (
     <Fragment>
       <div className="container-narrow">
+        {/* <div className="grid-2 my-2">
+          <button className="btn btn-light" onClick={handleDelete}>
+            Cancel
+          </button>
+          <button className="btn btn-primary--dark" onClick={handleSave}>
+            Save
+          </button>
+        </div> */}
         <div
           className="grid mb"
           style={{
@@ -57,43 +77,35 @@ const TravelAction = () => {
         >
           <img src="" alt="" style={styles.avatar} />
           <div style={styles.meta}>
-            <p className="font-sm">{travelAction.username}</p>
-            <p className="font-sm">{dateConverter(travelAction.date)}</p>
+            <p className="font-sm">{username}</p>
+            <p className="font-sm">{date}</p>
           </div>
         </div>
 
         <h1>Travel Action Summary</h1>
         <div className="container-narrow bg-dark">
-          <p>Title: {travelAction.title}</p>
-          {travelAction.description && (
-            <p>Description: {travelAction.description}</p>
-          )}
-          <p>Date: {travelAction.date}</p>
+          <p>Title: {title}</p>
+          {description && <p>Description: {description}</p>}
+          <p>Date: {date}</p>
         </div>
         <div className="container-narrow bg-dark">
           CO2e prevented:{" "}
-          <span className="font-lg text-primary">
-            {travelAction.carbonPrevented} kg
-          </span>
+          <span className="font-lg text-primary">{carbonPrevented} kg</span>
         </div>
         <div className="grid-2">
           <div className="card bg-dark" style={styles.mapCard}>
             <h3 className="px-1 mb-1">Travel Used</h3>
             <div className="grid-2" style={{ gridGap: 0 }}>
-              <div style={styles.mapData}>
+              <div style={{ textAlign: "center" }}>
                 <p className="font-lg" style={{ marginBottom: 0 }}>
-                  {travelAction.usedDistance}
+                  {usedDistance}
                 </p>
                 <p className="font-sm">mi</p>
               </div>
-              <div style={styles.mapData}>
+              <div style={{ textAlign: "center" }}>
                 <p className="font-lg" style={{ marginBottom: 0 }}>
                   <FontAwesomeIcon
-                    icon={
-                      travelAction.usedTravelType === "walking"
-                        ? faWalking
-                        : faBicycle
-                    }
+                    icon={usedTravelType === "walking" ? faWalking : faBicycle}
                     className="icon-primary"
                   />
                 </p>
@@ -104,20 +116,16 @@ const TravelAction = () => {
           <div className="card bg-dark" style={styles.mapCard}>
             <h3 className="px-1 mb-1">Travel Avoided</h3>
             <div className="grid-2" style={{ gridGap: 0 }}>
-              <div style={styles.mapData}>
+              <div style={{ textAlign: "center" }}>
                 <p className="font-lg" style={{ marginBottom: 0 }}>
-                  {travelAction.avoidedDistance}
+                  {avoidedDistance}
                 </p>
                 <p className="font-sm">mi</p>
               </div>
-              <div style={styles.mapData}>
+              <div style={{ textAlign: "center" }}>
                 <p className="font-lg" style={{ marginBottom: 0 }}>
                   <FontAwesomeIcon
-                    icon={
-                      travelAction.avoidedTravelType === "driving"
-                        ? faCar
-                        : null
-                    }
+                    icon={avoidedTravelType === "driving" ? faCar : null}
                     className="icon-warning"
                   />
                 </p>
@@ -125,14 +133,6 @@ const TravelAction = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="grid-2 my-2">
-          <button className="btn btn-light" onClick={handleDelete}>
-            Cancel
-          </button>
-          <button className="btn btn-primary--dark" onClick={handleSave}>
-            Save
-          </button>
         </div>
       </div>
     </Fragment>

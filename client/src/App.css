@@ -149,6 +149,9 @@ img {
   border-radius: 0.5rem;
   margin: 0.7rem 0;
 }
+.card.feed-item h3:hover {
+  color: var(--primary-color)
+}
 
 /* List */
 .list {
