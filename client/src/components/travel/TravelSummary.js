@@ -71,8 +71,9 @@ const TravelSummary = (props) => {
 
         // Get distance as a decimal.
         // Use parseFloat to convert from 'x mi' to x.
+        console.log(res.data);
         const distance = parseFloat(res.data.routes[0].legs[0].distance.text);
-
+        console.log(distance);
         return distance;
       } catch (err) {
         console.error(err);
